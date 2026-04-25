@@ -86,7 +86,6 @@ Here is the folder structure of this app.
   |- postcss.config.cjs
   |- tailwind.config.ts
   |- tsconfig.json
-  |- tsconfig.tsbuildinfo
   |- vite.config.ts
 ```
 <!--- FOLDER_STRUCTURE_END --->
