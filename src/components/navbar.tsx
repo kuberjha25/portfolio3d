@@ -51,7 +51,7 @@ export const Navbar = ({ hide }: NavbarProps) => {
         >
           <img src={logo} alt="Logo" className="w-9 h-9 object-contain" />
           <p className="text-white text-[18px] font-bold cursor-pointer flex">
-            Shubham&nbsp;<span className="sm:block hidden">| Developer</span>
+            Kuber<span className="sm:block hidden">&nbsp;| Developer</span>
           </p>
         </Link>
 
@@ -62,7 +62,7 @@ export const Navbar = ({ hide }: NavbarProps) => {
               key={link.id}
               className={cn(
                 active === link.title ? "text-white" : "text-secondary",
-                "hover:text-white text-[18px] font-medium cursor-pointer"
+                "hover:text-white text-[18px] font-medium cursor-pointer transition"
               )}
               onClick={() => !link.link && setActive(link.title)}
             >
@@ -99,7 +99,7 @@ export const Navbar = ({ hide }: NavbarProps) => {
                   key={link.id}
                   className={cn(
                     active === link.title ? "text-white" : "text-secondary",
-                    "font-poppins font-medium cursor-pointer text-[16px]"
+                    "font-poppins font-medium cursor-pointer text-[16px] transition hover:text-white"
                   )}
                   onClick={() => {
                     !link.link && setToggle(!toggle);

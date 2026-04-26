@@ -13,13 +13,13 @@ const Footer = () => {
         "w-full flex items-center py-8 bg-primary border-t border-t-secondary/5"
       )}
     >
-      <div className="w-full flex justify-between items-center max-w-7xl mx-auto">
+      <div className="w-full flex justify-between items-center max-w-7xl mx-auto flex-col sm:flex-row gap-4">
         <p className="text-white text-md font-bold flex">
-          &copy; Shubham {new Date().getFullYear()}. All rights reserved.
+          &copy; Kuber Jha {new Date().getFullYear()}. All rights reserved.
         </p>
 
         {/* Nav Links (Desktop) */}
-        <ul className="list-none hidden flex-row sm:flex gap-10">
+        <ul className="list-none flex flex-row gap-10">
           {SOCIALS.map((social) => (
             <li
               key={social.name}

@@ -82,34 +82,52 @@ export const Contact = () => {
 
   // handle form submit
   const handleSubmit = (e: FormEvent<HTMLFormElement>) => {
-    // prevent default page reload
     e.preventDefault();
-
-    // validate form
+    
     if (!validateForm()) return false;
-
-    // show loader
+    
     setLoading(true);
 
-    // send email
-    emailjs
-      .send(
-        import.meta.env.VITE_APP_SERVICE_ID,
-        import.meta.env.VITE_APP_TEMPLATE_ID,
-        {
-          from_name: form.name,
-          to_name: "Shubham",
-          from_email: form.email.trim().toLowerCase(),
-          to_email: import.meta.env.VITE_APP_EMAILJS_RECIEVER,
-          message: form.message,
-        },
-        import.meta.env.VITE_APP_EMAILJS_KEY,
-      )
-      .then(() => toast.success("Thanks for contacting me."))
+    // Template params for email to YOURSELF (notification)
+    const notificationParams = {
+      from_name: form.name,
+      from_email: form.email.trim().toLowerCase(),
+      message: form.message,
+      to_name: "Kuber",
+      to_email: import.meta.env.VITE_APP_EMAILJS_RECIEVER || "kuber98jha@gmail.com",
+    };
+
+    // Template params for AUTO-REPLY to USER
+    const autoReplyParams = {
+      from_name: form.name,
+      user_email: form.email.trim().toLowerCase(), // IMPORTANT: Match with template variable
+      message: form.message,
+    };
+
+    // 1. Send email to YOURSELF (notification)
+    const emailToYou = emailjs.send(
+      import.meta.env.VITE_APP_SERVICE_ID,
+      import.meta.env.VITE_APP_TEMPLATE_ID, // Your notification template
+      notificationParams,
+      import.meta.env.VITE_APP_EMAILJS_KEY
+    );
+
+    // 2. Send auto-reply to USER
+    const autoReplyToUser = emailjs.send(
+      import.meta.env.VITE_APP_SERVICE_ID,
+      import.meta.env.VITE_APP_AUTOREPLY_TEMPLATE_ID, // Auto-reply template ID
+      autoReplyParams,
+      import.meta.env.VITE_APP_EMAILJS_KEY
+    );
+
+    // Send both emails in parallel
+    Promise.all([emailToYou, autoReplyToUser])
+      .then(() => {
+        toast.success("Message sent! Check your email for confirmation.");
+      })
       .catch((error) => {
-        // Error handle
         console.log("[CONTACT_ERROR]: ", error);
-        toast.error("Something went wrong.");
+        toast.error("Something went wrong. Please try again.");
       })
       .finally(() => {
         setLoading(false);
@@ -126,11 +144,44 @@ export const Contact = () => {
       <div className="xl:mt-12 xl:flex-row flex-col-reverse flex gap-10 overflow-hidden">
         <motion.div
           variants={slideIn("left", "tween", 0.2, 1)}
-          className="flex-[0.75] bg-black-100 p-8 rounded-2xl"
+          className="flex-[0.6] bg-black-100 p-8 rounded-2xl"
         >
           {/* Title */}
           <p className={styles.sectionSubText}>Get in touch</p>
           <h3 className={styles.sectionHeadText}>Contact.</h3>
+
+          {/* Contact Info */}
+          <div className="mt-8 space-y-4">
+            <div className="flex items-center gap-3">
+              <span className="text-[#915eff] text-[20px]">📧</span>
+              <a
+                href="mailto:kuber98jha@gmail.com"
+                className="text-secondary hover:text-white transition"
+              >
+                kuber98jha@gmail.com
+              </a>
+            </div>
+            {/* <div className="flex items-center gap-3">
+              <span className="text-[#915eff] text-[20px]">📱</span>
+              <a
+                href="tel:+918708574843"
+                className="text-secondary hover:text-white transition"
+              >
+                +91 87085 74843
+              </a>
+            </div> */}
+            <div className="flex items-center gap-3">
+              <span className="text-[#915eff] text-[20px]">💼</span>
+              <a
+                href="https://linkedin.com/in/kuberjha"
+                target="_blank"
+                rel="noreferrer"
+                className="text-secondary hover:text-white transition"
+              >
+                LinkedIn Profile
+              </a>
+            </div>
+          </div>
 
           {/* Form */}
           <form
@@ -191,7 +242,7 @@ export const Contact = () => {
                 id="message"
                 value={form.message}
                 onChange={handleChange}
-                placeholder="Hello there!"
+                placeholder="Let me know your thoughts or inquiries..."
                 title="What do you want to say?"
                 disabled={loading}
                 aria-disabled={loading}
@@ -208,7 +259,7 @@ export const Contact = () => {
             <button
               type="submit"
               title={loading ? "Sending..." : "Send"}
-              className="bg-tertiary py-3 px-8 outline-none w-fit text-white font-bold shadow-md shadow-primary rounded-xl disabled:bg-tertiary/20 disabled:text-white/60"
+              className="bg-tertiary py-3 px-8 outline-none w-fit text-white font-bold shadow-md shadow-primary rounded-xl disabled:bg-tertiary/20 disabled:text-white/60 hover:bg-tertiary/80 transition"
               disabled={loading}
               aria-disabled={loading}
             >
