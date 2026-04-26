@@ -58,9 +58,12 @@ Here is the folder structure of this app.
       |--- feedbacks.tsx
       |--- footer.tsx
       |--- hero.tsx
+      |--- ImageSlider.tsx
+      |--- ImageSliderSection.tsx
       |--- index.ts
       |--- loader.tsx
       |--- navbar.tsx
+      |--- Overlay.tsx
       |--- tech.tsx
       |--- works.tsx
     |-- constants/
@@ -82,6 +85,7 @@ Here is the folder structure of this app.
   |- bun.lock
   |- index.html
   |- netlify.toml
+  |- package-lock.json
   |- package.json
   |- postcss.config.cjs
   |- tailwind.config.ts
@@ -179,10 +183,12 @@ Useful resources and dependencies that are used in 3D Portfolio.
 - [@types/react-dom](https://www.npmjs.com/package/@types/react-dom): ^19.2.3
 - [@types/react-vertical-timeline-component](https://www.npmjs.com/package/@types/react-vertical-timeline-component): ^3.3.6
 - [@types/tailwindcss](https://www.npmjs.com/package/@types/tailwindcss): ^3.1.0
+- [@types/three](https://www.npmjs.com/package/@types/three): ^0.184.0
 - [@vitejs/plugin-react](https://www.npmjs.com/package/@vitejs/plugin-react): ^6.0.1
 - [autoprefixer](https://www.npmjs.com/package/autoprefixer): ^10.5.0
 - [clsx](https://www.npmjs.com/package/clsx): ^2.1.1
 - [framer-motion](https://www.npmjs.com/package/framer-motion): ^12.38.0
+- [gsap](https://www.npmjs.com/package/gsap): ^3.15.0
 - [maath](https://www.npmjs.com/package/maath): ^0.10.8
 - [postcss](https://www.npmjs.com/package/postcss): ^8.5.10
 - [react](https://www.npmjs.com/package/react): ^19.2.5
