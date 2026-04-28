@@ -54,23 +54,32 @@ Here is the folder structure of this app.
       |--- about.tsx
       |--- banner.tsx
       |--- contact.tsx
+      |--- ErrorBoundary.tsx
       |--- experience.tsx
       |--- feedbacks.tsx
       |--- footer.tsx
       |--- hero.tsx
+      |--- hobbies.tsx
       |--- ImageSlider.tsx
       |--- ImageSliderSection.tsx
       |--- index.ts
       |--- loader.tsx
+      |--- MainLoader.tsx
       |--- navbar.tsx
       |--- Overlay.tsx
       |--- tech.tsx
       |--- works.tsx
     |-- constants/
       |--- index.ts
+    |-- context/
+      |--- LanguageContext.tsx
     |-- hoc/
       |--- index.ts
       |--- section-wrapper.tsx
+    |-- locales/
+      |--- en.ts
+      |--- fr.ts
+      |--- hi.ts
     |-- utils/
       |--- lib.ts
       |--- motion.ts
@@ -84,6 +93,7 @@ Here is the folder structure of this app.
   |- .gitignore
   |- bun.lock
   |- index.html
+  |- kuberkey.pem
   |- netlify.toml
   |- package-lock.json
   |- package.json
