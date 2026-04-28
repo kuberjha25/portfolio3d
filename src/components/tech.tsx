@@ -10,6 +10,7 @@ import { SectionWrapper } from "../hoc";
 import { styles } from "../styles";
 import { textVariant, fadeIn } from "../utils/motion";
 import { cn } from "../utils/lib";
+import { useLanguage } from "../context/LanguageContext";
 
 type SkillCategoryProps = {
   title: string;
@@ -67,18 +68,19 @@ const SkillCategory = ({ title, technologies, delayStart }: SkillCategoryProps) 
 };
 
 export const Tech = () => {
+  const { t } = useLanguage();
+
   return (
     <SectionWrapper idName="skills">
       <>
         <motion.div variants={textVariant()}>
-          <p className={styles.sectionSubText}>My Expertise</p>
-          <h2 className={styles.sectionHeadText}>Technologies.</h2>
+          <p className={styles.sectionSubText}>{t('tech.subtitle')}</p>
+          <h2 className={styles.sectionHeadText}>{t('tech.title')}</h2>
         </motion.div>
         <motion.p
           variants={fadeIn(undefined, undefined, 0.1, 1)}
           className="mt-4 text-gray-400 text-base max-w-3xl leading-relaxed mb-12"
         >
-          Over the years, I've worked with a diverse range of technologies across the full stack.
         </motion.p>
         <div className="w-full space-y-12">
           <SkillCategory title="Frontend" technologies={TECHNOLOGIES_FRONTEND} delayStart={0.2} />

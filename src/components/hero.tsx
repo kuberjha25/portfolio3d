@@ -20,45 +20,14 @@ function drawHeroFrame(
   canvas: HTMLCanvasElement,
   img: HTMLImageElement
 ) {
-  const canvasRatio = canvas.width / canvas.height;
-  const imgRatio = img.naturalWidth / img.naturalHeight;
-
-  let drawWidth: number;
-  let drawHeight: number;
-  let offsetX: number;
-  let offsetY: number;
-
-  if (canvasRatio > imgRatio) {
-    drawWidth = canvas.width;
-    drawHeight = canvas.width / imgRatio;
-    offsetX = 0;
-    offsetY = 0;
-  } else {
-    drawWidth = canvas.height * imgRatio;
-    drawHeight = canvas.height;
-    offsetX = (canvas.width - drawWidth) / 2;
-    offsetY = 0;
+  // If we just want to fill the canvas, we can use the canvas's internal resolution
+  // and CSS object-cover will handle the rest. This completely removes the laggy ctx.filter.
+  if (canvas.width !== img.naturalWidth || canvas.height !== img.naturalHeight) {
+    canvas.width = img.naturalWidth;
+    canvas.height = img.naturalHeight;
   }
-
   ctx.clearRect(0, 0, canvas.width, canvas.height);
-
-  ctx.save();
-  ctx.filter = "blur(18px) brightness(0.7)";
-  ctx.drawImage(img, offsetX, offsetY, drawWidth, drawHeight);
-  ctx.restore();
-
-  if (canvasRatio < imgRatio) {
-    const fullHeightWidth = canvas.height * imgRatio;
-    const fullHeightX = (canvas.width - fullHeightWidth) / 2;
-
-    ctx.drawImage(img, fullHeightX, 0, fullHeightWidth, canvas.height);
-    return;
-  }
-
-  const fullWidthScale = canvas.width / img.naturalWidth;
-  const fullWidthHeight = img.naturalHeight * fullWidthScale;
-
-  ctx.drawImage(img, 0, 0, canvas.width, fullWidthHeight);
+  ctx.drawImage(img, 0, 0);
 }
 
 export function Hero() {
@@ -131,20 +100,11 @@ export function Hero() {
       animationFrameId = requestAnimationFrame(render);
     };
 
-    const resizeCanvas = () => {
-      const { width, height } = canvas.getBoundingClientRect();
-      const pixelRatio = window.devicePixelRatio || 1;
-
-      canvas.width = Math.round(width * pixelRatio);
-      canvas.height = Math.round(height * pixelRatio);
-    };
-
-    window.addEventListener("resize", resizeCanvas);
-    resizeCanvas();
+    // Remove the window resize listener since the canvas size is now based on the image size
+    // and CSS object-cover handles the responsiveness perfectly.
     render();
 
     return () => {
-      window.removeEventListener("resize", resizeCanvas);
       cancelAnimationFrame(animationFrameId);
     };
   }, [hasLoadedFrames, frameIndex]);
@@ -158,7 +118,7 @@ export function Hero() {
       <div className="sticky top-[var(--nav-height)] h-[calc(100svh-var(--nav-height))] w-full overflow-hidden">
         <canvas
           ref={canvasRef}
-          className="absolute inset-0 w-full h-full object-cover"
+          className="absolute inset-0 w-full h-full object-cover object-[47%_center] sm:object-[center_30%] md:object-[center_20%]"
         />
         <div className="pointer-events-none absolute inset-x-0 bottom-0 z-[5] h-1/2 bg-gradient-to-b from-transparent via-[#121212]/55 to-[#121212]" />
         <Overlay scrollYProgress={scrollYProgress} />

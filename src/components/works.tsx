@@ -12,6 +12,7 @@ import { PROJECTS } from "../constants";
 import { SectionWrapper } from "../hoc";
 import { styles } from "../styles";
 import { fadeIn, textVariant } from "../utils/motion";
+import { useLanguage } from "../context/LanguageContext";
 
 type Project = (typeof PROJECTS)[number];
 
@@ -243,6 +244,7 @@ const ProjectCard = ({ project, index }: ProjectCardProps) => {
 };
 
 export const Works = () => {
+  const { t } = useLanguage();
   const [filter, setFilter] = useState("All");
   const categories = ["All", ...new Set(PROJECTS.map((project) => project.category))];
   const filteredProjects =
@@ -254,17 +256,15 @@ export const Works = () => {
     <SectionWrapper idName="projects">
       <>
         <motion.div variants={textVariant()}>
-          <p className={styles.sectionSubText}>My Work</p>
-          <h2 className={styles.sectionHeadText}>Projects.</h2>
+          <p className={styles.sectionSubText}>{t('works.subtitle')}</p>
+          <h2 className={styles.sectionHeadText}>{t('works.title')}</h2>
         </motion.div>
 
         <motion.p
           variants={fadeIn(undefined, undefined, 0.1, 1)}
           className="mt-3 max-w-3xl text-[17px] leading-[30px] text-secondary"
         >
-          Following projects showcase my skills and experience through
-          real-world examples of my work. Each project is briefly described with
-          links to code repositories and live demos.
+          {t('works.description')}
         </motion.p>
 
         <div className="mb-12 mt-12 flex flex-wrap justify-center gap-4">

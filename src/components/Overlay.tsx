@@ -1,18 +1,19 @@
 "use client";
 
 import { motion, MotionValue, useTransform } from "framer-motion";
+import { useLanguage } from "../context/LanguageContext";
 
 interface OverlayProps {
   scrollYProgress: MotionValue<number>;
 }
 
 export default function Overlay({ scrollYProgress }: OverlayProps) {
-  // Section 1: 0% to 20%
-  const opacity1 = useTransform(scrollYProgress, [0, 0.08, 0.18], [1, 0.75, 0]);
-  const kuberX = useTransform(scrollYProgress, [0, 0.18], [0, 150]);
-  const jhaX = useTransform(scrollYProgress, [0, 0.18], [0, -150]);
-  const nameY = useTransform(scrollYProgress, [0, 0.18], [0, -40]);
-  const mobileNameY = useTransform(scrollYProgress, [0, 0.18], [0, -64]);
+  // Section 1: Hero Name Text
+  const opacity1 = useTransform(scrollYProgress, [0, 0.8, 1], [1, 1, 0]);
+  const kuberX = useTransform(scrollYProgress, [0, 1], [0, 150]);
+  const jhaX = useTransform(scrollYProgress, [0, 1], [0, -150]);
+  const nameY = useTransform(scrollYProgress, [0, 1], [0, -40]);
+  const mobileNameY = useTransform(scrollYProgress, [0, 1], [0, -64]);
 
   // Section 2: 25% to 45%
   const opacity2 = useTransform(scrollYProgress, [0.2, 0.3, 0.4, 0.5], [0, 1, 1, 0]);
@@ -21,6 +22,7 @@ export default function Overlay({ scrollYProgress }: OverlayProps) {
   // Section 3: 50% to 75%
   const opacity3 = useTransform(scrollYProgress, [0.45, 0.6, 0.7, 0.8], [0, 1, 1, 0]);
   const y3 = useTransform(scrollYProgress, [0.45, 0.8], [100, -100]);
+  const { t } = useLanguage();
 
   return (
     <div className="absolute inset-0 z-10 pointer-events-none w-full h-full">
@@ -47,7 +49,7 @@ export default function Overlay({ scrollYProgress }: OverlayProps) {
       </motion.h1>
 
       <span className="absolute bottom-6 right-4 max-w-[130px] text-right text-[10px] font-medium uppercase leading-none tracking-[0.08em] text-white drop-shadow-md sm:right-12 sm:max-w-none sm:text-base sm:tracking-[0.24em] md:right-24">
-        FullStack Developer
+        {t('hero.role')}
       </span>
 
       <div className="absolute bottom-6 left-4 flex items-center gap-1.5 text-left sm:left-12 sm:gap-3 md:left-24">

@@ -14,6 +14,8 @@ import {
 import Footer from "./components/footer";
 import ErrorBoundary from "./components/ErrorBoundary";
 import MainLoader from "./components/MainLoader";
+import { LanguageProvider } from "./context/LanguageContext";
+import Hobbies from "./components/hobbies";
 
 const App = () => {
   const [hide, setHide] = useState(true);
@@ -68,32 +70,36 @@ const App = () => {
     };
   }, []);
 
-  if (isLoading) {
-    return <MainLoader onLoadingComplete={() => setIsLoading(false)} />;
-  }
-
   return (
-    <BrowserRouter>
-      <div className="relative z-0 bg-black">
-        <div className="bg-hero-pattern bg-cover bg-no-repeat bg-center">
-          <Navbar hide={hide} />
-          <ErrorBoundary>
-            <Hero />
-          </ErrorBoundary>
+    <LanguageProvider>
+      <BrowserRouter>
+        {isLoading && <MainLoader onLoadingComplete={() => setIsLoading(false)} />}
+        <div
+          className={`relative z-0 bg-black transition-opacity duration-500 ${
+            isLoading ? "opacity-0 h-screen overflow-hidden" : "opacity-100"
+          }`}
+        >
+          <div className="bg-hero-pattern bg-cover bg-no-repeat bg-center">
+            <Navbar hide={hide} />
+            <ErrorBoundary>
+              <Hero />
+            </ErrorBoundary>
+          </div>
+          <div className="relative z-0">
+            <About />
+            <Hobbies />
+            <Experience />
+            <Tech />
+            <Works />
+            <StarsCanvas />
+            <ErrorBoundary>
+              <Contact />
+            </ErrorBoundary>
+          </div>
+          <Footer />
         </div>
-        <div className="relative z-0">
-          <About />
-          <Experience />
-          <Tech />
-          <Works />
-          <StarsCanvas />
-          <ErrorBoundary>
-            <Contact />
-          </ErrorBoundary>
-        </div>
-        <Footer />
-      </div>
-    </BrowserRouter>
+      </BrowserRouter>
+    </LanguageProvider>
   );
 };
 

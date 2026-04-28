@@ -69,11 +69,11 @@ export const NAV_LINKS = [
     title: "Work",
     link: null,
   },
-  {
-    id: "feedbacks",
-    title: "Feedbacks",
-    link: null,
-  },
+  // {
+  //   id: "feedbacks",
+  //   title: "Feedbacks",
+  //   link: null,
+  // },
   {
     id: "skills",
     title: "Skills",
@@ -178,55 +178,55 @@ export const TECHNOLOGIES = [
 // Experiences
 export const EXPERIENCES = [
   {
-    title: "Full Stack Developer",
+    title: "Full Stack & React Native Developer",
     company_name: "Paul Merchants Limited",
     icon: paulmerchants,
     iconBg: "#383E56",
     date: "Mar 2024 - Present",
     points: [
-      "Developed and maintained scalable full-stack applications using React, Node.js, and Express.js",
-      "Collaborated with cross-functional teams to design and implement innovative solutions",
-      "Optimized application performance, improving load times by 40%",
-      "Led code reviews and mentored junior developers on best practices",
+      "Revamped Mayaa Money mobile application from Expo to React Native CLI, improving app performance and user ratings; implemented code splitting to reduce cold-start time by 45%.",
+      "Optimized app bundle size across platforms: iOS from 100MB to 50MB and Android from 60MB to 30MB through tree-shaking and image optimization.",
+      "Built B2C mobile application and B2B admin/partner portals for Paul Gold serving 50k+ active users.",
+      "Developed full-stack product website, partner portal, and referral system for Chaupal OTT using React.js, Spring Boot, and MSSQL.",
+      "Integrated fintech modules including prepaid cards, UPI integration (PaulPay), and Gamezop APIs."
     ],
   },
   {
-    title: "Frontend Developer",
+    title: "Frontend & Android Developer",
     company_name: "Retail Scan Management Services",
     icon: retailScan,
     iconBg: "#E6DEDD",
-    date: "2021 - 2023",
+    date: "2023 - 2024",
     points: [
-      "Built cross-platform mobile applications reaching 50K+ downloads",
-      "Implemented native modules for advanced features like video processing",
-      "Reduced app bundle size by 30% through optimization",
-      "Maintained 95%+ app store ratings with consistent quality releases",
+      "Developed RetailScan Portal (B2B web portal) using React.js with role-based dashboards for retail auditors; improved audit efficiency by 30%.",
+      "Built MyTrack auditing app in Android Studio with offline-first architecture, enabling offline audits in low-connectivity zones.",
+      "Migrated EzeePay Android app to React Native within a 2-month deadline.",
+      "Designed auditor payment and reward tracking system."
     ],
   },
   {
-    title: "Software & Applications Developement Engineer",
-    company_name: "Tata Communication Transformation Services",
+    title: "Software & Applications Development Engineer",
+    company_name: "Tata Communications",
     icon: tcts,
     iconBg: "#383E56",
-    date: "2020 - 2021",
+    date: "Aug 2021 - Jul 2023",
     points: [
-      "Developed RESTful APIs using Java Spring Boot and Node.js",
-      "Designed and optimized database schemas for high-traffic applications",
-      "Implemented security features and authentication mechanisms",
-      "Collaborated on microservices architecture implementation",
+      "Led geofencing-enabled field auditing solution for SRMS project with real-time location tracking for 1,000+ auditors.",
+      "Developed full-stack WFM mobile application (Spring Boot, React.js, React Native); managed independent Play Store and App Store releases.",
+      "Built travel compliance monitoring system with EnableX video/audio calling integration; reduced audit discrepancies by 35%.",
+      "Managed .NET and C# backend for RADS project (primary client: Bells Canada).",
+      "Led 2 interns and mentored in React Native best practices and production deployment workflows."
     ],
   },
   {
-    title: "Full Stack Intern",
+    title: "Java Spring Boot Intern",
     company_name: "Cuemath",
     icon: cuemath,
     iconBg: "#E6DEDD",
-    date: "2019 - 2020",
+    date: "Jan 2021 - Aug 2021",
     points: [
-      "Developed full-stack web applications using MERN stack",
-      "Contributed to codebase with clean, maintainable code",
-      "Participated in agile development and sprint planning",
-      "Learned and implemented modern web development practices",
+      "Developed backend services using Java Spring Boot.",
+      "Contributed to production-level API development and performance optimizations."
     ],
   },
 ] as const;
@@ -485,16 +485,16 @@ export const SOCIALS = [
 export const STATS = [
   {
     label: "Years Experience",
-    value: "5+",
+    value: "4+",
+  },
+  {
+    label: "Projects Completed",
+    value: "50+",
   },
   // {
-  //   label: "Projects Completed",
-  //   value: "50+",
+  //   label: "Happy Clients",
+  //   value: "20+",
   // },
-  {
-    label: "Happy Clients",
-    value: "20+",
-  },
   {
     label: "24/7 Support",
     value: "✓",

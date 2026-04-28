@@ -3,6 +3,7 @@ import { SectionWrapper } from "../hoc";
 import { styles } from "../styles";
 import { fadeIn, textVariant } from "../utils/motion";
 import { STATS } from "../constants";
+import { useLanguage } from "../context/LanguageContext";
 
 const Icon = ({ type }: { type: "sparkles" | "code" | "terminal" }) => {
   if (type === "sparkles") {
@@ -31,43 +32,26 @@ const Icon = ({ type }: { type: "sparkles" | "code" | "terminal" }) => {
 };
 
 export const About = () => {
+  const { t } = useLanguage();
+
   const handleContactClick = () => {
-    if (/Mobi|Android|iPhone/i.test(navigator.userAgent)) {
-      window.location.href = "tel:+918708574843";
-    } else {
-      window.location.href = "mailto:kuber98jha@gmail.com";
-    }
+    document.getElementById("contact")?.scrollIntoView({ behavior: "smooth" });
   };
 
   return (
     <SectionWrapper idName="about">
       <>
         <motion.div variants={textVariant()}>
-          <p className={styles.sectionSubText}>Introduction</p>
-          <h2 className={styles.sectionHeadText}>About Me.</h2>
+          <p className={styles.sectionSubText}>{t('about.introduction')}</p>
+          <h2 className={styles.sectionHeadText}>{t('about.title')}</h2>
         </motion.div>
 
         <motion.div
           variants={fadeIn(undefined, undefined, 0.1, 1)}
           className="mt-4 max-w-4xl space-y-6 text-gray-300 leading-relaxed text-base sm:text-lg"
         >
-          <p>
-            I'm a passionate Full Stack Developer with over 5 years of
-            experience in building scalable web and mobile applications.
-            Currently working at{" "}
-            <span className="font-semibold text-white">
-              Paul Merchants Limited
-            </span>
-            , where I create innovative solutions using React, React Native,
-            Java, and Spring Boot.
-          </p>
-
-          <p>
-            My journey in tech started during my Computer Science degree, where
-            I fell in love with creating things that live on the internet. Since
-            then, I've worked on diverse projects ranging from e-commerce
-            platforms to mobile apps serving thousands of users.
-          </p>
+          <p>{t('about.p1')}</p>
+          <p>{t('about.p2')}</p>
         </motion.div>
 
         {/* Stats Grid */}
@@ -95,7 +79,7 @@ export const About = () => {
         >
           <h3 className="mb-6 flex items-center gap-2 text-xl font-semibold text-white">
             <Icon type="code" />
-            Technologies I work with
+            {t('about.tech_title')}
           </h3>
           <div className="flex flex-wrap gap-2">
             {["React", "Next.js", "React Native", "Node.js", "Java", "Spring Boot", "MongoDB", "PostgreSQL", "TypeScript", "Docker", "AWS"].map((tech) => (
@@ -116,28 +100,40 @@ export const About = () => {
         >
           <h3 className="mb-4 flex items-center gap-2 text-xl font-semibold text-white">
             <Icon type="terminal" />
-            Education & Background
+            {t('about.education_title')}
           </h3>
-          <p className="text-gray-300">Bachelor's Degree in Computer Science</p>
+          <p className="text-gray-300">{t('about.education_degree')}</p>
           <p className="mt-2 text-sm text-gray-400 leading-relaxed">
-            Specialized in Full Stack Development with a focus on scalable web
-            and mobile applications.
+            {t('about.education_desc')}
           </p>
         </motion.div>
 
         {/* CTA Button */}
         <motion.div
           variants={fadeIn("up", "spring", 0.45, 0.75)}
-          className="mt-10"
+          className="mt-10 flex flex-wrap gap-4"
         >
           <button
             type="button"
             onClick={handleContactClick}
             className="group relative overflow-hidden rounded-lg bg-white px-8 py-3 font-medium text-black transition-all hover:bg-gray-200"
           >
-            <span className="relative z-10">Get In Touch</span>
+            <span className="relative z-10">{t('about.get_in_touch')}</span>
             <span className="absolute inset-0 -translate-x-full group-hover:translate-x-0 transition-transform duration-300 bg-gradient-to-r from-transparent via-white/20 to-transparent" />
           </button>
+
+          <a
+            href="/KuberJha-Resume.pdf"
+            download="KuberJha-Resume.pdf"
+            className="group relative overflow-hidden rounded-lg border border-white/20 bg-white/5 px-8 py-3 font-medium text-white transition-all hover:bg-white/10 flex items-center gap-2"
+          >
+            <span className="relative z-10 flex items-center gap-2">
+              {t('about.download_resume')}
+              <svg className="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4" />
+              </svg>
+            </span>
+          </a>
         </motion.div>
       </>
     </SectionWrapper>

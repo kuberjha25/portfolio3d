@@ -8,6 +8,7 @@ import { SectionWrapper } from "../hoc";
 import { styles } from "../styles";
 import { textVariant } from "../utils/motion";
 import "react-vertical-timeline-component/style.min.css";
+import { useLanguage } from "../context/LanguageContext";
 
 type ExperienceCardProps = {
   experience: (typeof EXPERIENCES)[number];
@@ -45,12 +46,14 @@ const ExperienceCard = ({ experience }: ExperienceCardProps) => (
 );
 
 export const Experience = () => {
+  const { t } = useLanguage();
+
   return (
     <SectionWrapper idName="work">
       <>
         <motion.div variants={textVariant()}>
-          <p className={styles.sectionSubText}>What I have done so far</p>
-          <h2 className={styles.sectionHeadText}>Work Experience.</h2>
+          <p className={styles.sectionSubText}>{t('experience.subtitle')}</p>
+          <h2 className={styles.sectionHeadText}>{t('experience.title')}</h2>
         </motion.div>
         <div className="mt-20 flex flex-col">
           <VerticalTimeline>
