@@ -4,15 +4,15 @@ import { type CSSProperties, useEffect, useRef, useState } from "react";
 import { useScroll, useTransform } from "framer-motion";
 import Overlay from "./Overlay";
 
-const FRAME_COUNT = 240;
+const FRAME_COUNT = 191;
 const PAD_LENGTH = 3;
 const FRAME_BASE_PATH = `${import.meta.env.BASE_URL}sequence/`;
-const NAV_HEIGHT = 76;
+const NAV_HEIGHT = 66;
 
 function getFramePath(index: number) {
   const paddedIndex = (index + 1).toString().padStart(PAD_LENGTH, "0");
-  // return `${FRAME_BASE_PATH}frame_${paddedIndex}_delay-0.053s.png`;
-  return `${FRAME_BASE_PATH}ezgif-frame-${paddedIndex}.png`;
+  return `${FRAME_BASE_PATH}frame_${paddedIndex}_delay-0.042s.webp`;
+  // return `${FRAME_BASE_PATH}ezgif-frame-${paddedIndex}.png`;
 }
 
 function drawHeroFrame(
@@ -66,7 +66,7 @@ export function Hero() {
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const imagesRef = useRef<(HTMLImageElement | null)[]>([]);
   const [loadedCount, setLoadedCount] = useState(0);
-  const hasLoadedFrames = loadedCount > 0;
+  const hasLoadedFrames = loadedCount > 50; // Wait for at least 50 frames to load
 
   const { scrollYProgress } = useScroll({
     target: containerRef,

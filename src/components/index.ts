@@ -3,8 +3,8 @@
 
 import { About } from "./about";
 import {
-  BallCanvas,
-  ComputersCanvas,
+  // BallCanvas,
+  // ComputersCanvas,
   EarthCanvas,
   StarsCanvas,
 } from "./canvas";
@@ -18,8 +18,8 @@ import { Works } from "./works";
 
 export {
   About,
-  BallCanvas,
-  ComputersCanvas,
+  // BallCanvas,
+  // ComputersCanvas,
   Contact,
   EarthCanvas,
   Experience,

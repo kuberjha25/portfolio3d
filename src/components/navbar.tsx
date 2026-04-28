@@ -1,33 +1,20 @@
 import { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
-
 import { logo, menu, close } from "../assets";
 import { NAV_LINKS } from "../constants";
 import { styles } from "../styles";
 import { cn } from "../utils/lib";
 
-type NavbarProps = {
-  hide: boolean;
-};
-
-// Navbar
-export const Navbar = ({ hide }: NavbarProps) => {
-  // state variables
+export const Navbar = ({ hide }: { hide: boolean }) => {
   const [active, setActive] = useState("");
   const [toggle, setToggle] = useState(false);
-  const [isAtBottom, setIsAtBottom] = useState(false);
+  const [scrolled, setScrolled] = useState(false);
 
   useEffect(() => {
     const handleScroll = () => {
-      if (window.scrollY > 10) {
-        setIsAtBottom(true);
-      } else {
-        setIsAtBottom(false);
-      }
+      setScrolled(window.scrollY > 10);
     };
-
     window.addEventListener("scroll", handleScroll);
-
     return () => window.removeEventListener("scroll", handleScroll);
   }, []);
 
@@ -35,12 +22,11 @@ export const Navbar = ({ hide }: NavbarProps) => {
     <nav
       className={cn(
         styles.paddingX,
-        "w-full flex items-center py-5 fixed top-0 z-20 bg-primary",
-        isAtBottom || hide ? "mt-0" : "mt-20"
+        "fixed top-0 z-50 w-full py-4 transition-all duration-300",
+        scrolled || !hide ? "bg-black/80 backdrop-blur-lg border-b border-white/10" : "bg-transparent"
       )}
     >
-      <div className="w-full flex justify-between items-center max-w-7xl mx-auto">
-        {/* Logo */}
+      <div className="mx-auto flex max-w-7xl items-center justify-between">
         <Link
           to="/"
           className="flex items-center gap-2"
@@ -49,73 +35,76 @@ export const Navbar = ({ hide }: NavbarProps) => {
             window.scrollTo(0, 0);
           }}
         >
-          <img src={logo} alt="Logo" className="w-9 h-9 object-contain" />
-          <p className="text-white text-[18px] font-bold cursor-pointer flex">
-            Kuber<span className="sm:block hidden">&nbsp;| Developer</span>
+          <img src={logo} alt="Logo" className="h-8 w-8 object-contain" />
+          <p className="text-lg font-semibold text-white">
+            Kuber<span className="hidden sm:inline"> | Developer</span>
           </p>
         </Link>
 
-        {/* Nav Links (Desktop) */}
-        <ul className="list-none hidden sm:flex flex-row gap-10">
+        <ul className="hidden sm:flex gap-8">
           {NAV_LINKS.map((link) => (
-            <li
-              key={link.id}
-              className={cn(
-                active === link.title ? "text-white" : "text-secondary",
-                "hover:text-white text-[18px] font-medium cursor-pointer transition"
-              )}
-              onClick={() => !link.link && setActive(link.title)}
-            >
+            <li key={link.id}>
               {link.link ? (
-                <a href={link.link} target="_blank" rel="noreferrer noopener">
+                <a
+                  href={link.link}
+                  target="_blank"
+                  rel="noreferrer noopener"
+                  className="text-sm text-gray-300 transition hover:text-white"
+                >
                   {link.title}
                 </a>
               ) : (
-                <a href={`#${link.id}`}>{link.title}</a>
+                <a
+                  href={`#${link.id}`}
+                  className={cn(
+                    "text-sm transition",
+                    active === link.title ? "text-white" : "text-gray-400 hover:text-white"
+                  )}
+                  onClick={() => setActive(link.title)}
+                >
+                  {link.title}
+                </a>
               )}
             </li>
           ))}
         </ul>
 
-        {/* Hamburger Menu (Mobile) */}
-        <div className="sm:hidden flex flex-1 justify-end items-center">
+        <div className="sm:hidden">
           <img
             src={toggle ? close : menu}
             alt="Menu"
-            className="w-[28px] h-[28px] object-contain cursor-pointer"
+            className="h-6 w-6 cursor-pointer"
             onClick={() => setToggle(!toggle)}
           />
-
           <div
             className={cn(
               !toggle ? "hidden" : "flex",
-              "p-6 black-gradient absolute top-20 right-0 mx-4 my-2 min-w-[140px] z-10 rounded-xl"
+              "absolute right-4 top-16 min-w-[140px] rounded-xl border border-white/10 bg-black/90 p-4 backdrop-blur-lg"
             )}
           >
-            {/* Nav Links (Mobile) */}
-            <ul className="list-none flex justify-end items-start flex-col gap-4">
+            <ul className="flex flex-col gap-3">
               {NAV_LINKS.map((link) => (
-                <li
-                  key={link.id}
-                  className={cn(
-                    active === link.title ? "text-white" : "text-secondary",
-                    "font-poppins font-medium cursor-pointer text-[16px] transition hover:text-white"
-                  )}
-                  onClick={() => {
-                    !link.link && setToggle(!toggle);
-                    !link.link && setActive(link.title);
-                  }}
-                >
+                <li key={link.id}>
                   {link.link ? (
                     <a
                       href={link.link}
                       target="_blank"
                       rel="noreferrer noopener"
+                      className="text-sm text-gray-300"
                     >
                       {link.title}
                     </a>
                   ) : (
-                    <a href={`#${link.id}`}>{link.title}</a>
+                    <a
+                      href={`#${link.id}`}
+                      className="text-sm text-gray-300"
+                      onClick={() => {
+                        setToggle(false);
+                        setActive(link.title);
+                      }}
+                    >
+                      {link.title}
+                    </a>
                   )}
                 </li>
               ))}

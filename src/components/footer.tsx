@@ -1,38 +1,36 @@
 import { Link } from "react-router-dom";
-
 import { SOCIALS } from "../constants";
 import { styles } from "../styles";
 import { cn } from "../utils/lib";
 
-// Footer
 const Footer = () => {
   return (
-    <nav
+    <footer
       className={cn(
         styles.paddingX,
-        "w-full flex items-center py-8 bg-primary border-t border-t-secondary/5"
+        "w-full border-t border-white/10 bg-black/50 py-6"
       )}
     >
-      <div className="w-full flex justify-between items-center max-w-7xl mx-auto flex-col sm:flex-row gap-4">
-        <p className="text-white text-md font-bold flex">
-          &copy; Kuber Jha {new Date().getFullYear()}. All rights reserved.
+      <div className="mx-auto flex max-w-7xl flex-col items-center justify-between gap-4 sm:flex-row">
+        <p className="text-sm text-gray-500">
+          © Kuber Jha {new Date().getFullYear()}. All rights reserved.
         </p>
-
-        {/* Nav Links (Desktop) */}
-        <ul className="list-none flex flex-row gap-10">
+        <ul className="flex gap-6">
           {SOCIALS.map((social) => (
-            <li
-              key={social.name}
-              className="text-secondary font-poppins font-medium cursor-pointer text-[16px] opacity-80 hover:opacity-100 transition"
-            >
-              <Link to={social.link} target="_blank" rel="noreferrer noopener">
-                <img src={social.icon} alt={social.name} className="h-6 w-6" />
+            <li key={social.name}>
+              <Link
+                to={social.link}
+                target="_blank"
+                rel="noreferrer noopener"
+                className="block opacity-60 transition hover:opacity-100"
+              >
+                <img src={social.icon} alt={social.name} className="h-5 w-5" />
               </Link>
             </li>
           ))}
         </ul>
       </div>
-    </nav>
+    </footer>
   );
 };
 
