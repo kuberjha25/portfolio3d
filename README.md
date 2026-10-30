@@ -52,7 +52,6 @@ Here is the folder structure of this app.
     |-- components/
       |--- canvas/
       |--- about.tsx
-      |--- banner.tsx
       |--- contact.tsx
       |--- ErrorBoundary.tsx
       |--- experience.tsx
@@ -60,13 +59,12 @@ Here is the folder structure of this app.
       |--- footer.tsx
       |--- hero.tsx
       |--- hobbies.tsx
-      |--- ImageSlider.tsx
-      |--- ImageSliderSection.tsx
       |--- index.ts
       |--- loader.tsx
       |--- MainLoader.tsx
       |--- navbar.tsx
       |--- Overlay.tsx
+      |--- Rich.tsx
       |--- tech.tsx
       |--- works.tsx
     |-- constants/
@@ -81,8 +79,11 @@ Here is the folder structure of this app.
       |--- fr.ts
       |--- hi.ts
     |-- utils/
+      |--- device.ts
+      |--- heroReady.ts
       |--- lib.ts
       |--- motion.ts
+      |--- useInView.ts
     |-- app.tsx
     |-- env.d.ts
     |-- index.css
@@ -90,10 +91,10 @@ Here is the folder structure of this app.
     |-- styles.ts
   |- .env.example
   |- .env/.env.local
+  |- .gitattributes
   |- .gitignore
   |- bun.lock
   |- index.html
-  |- kuberkey.pem
   |- netlify.toml
   |- package-lock.json
   |- package.json
