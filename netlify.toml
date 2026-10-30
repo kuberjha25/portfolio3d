@@ -1,2 +1,26 @@
 [build]
   ignore = "git diff HEAD^ HEAD --name-only | grep -qEv '(\\.md$|LICENSE$|\\.env\\.example$|^\\.github/|^\\.vscode/)' && exit 1 || exit 0"
+
+# Long-term caching so repeat visitors don't re-download heavy files.
+# Files in /assets have a content hash in their name, so they never change.
+[[headers]]
+  for = "/assets/*"
+  [headers.values]
+    Cache-Control = "public, max-age=31536000, immutable"
+
+# Hero frames, 3D model and fonts: cache for 30 days.
+# If you replace these files, rename the folder/file so visitors get the new one.
+[[headers]]
+  for = "/hero/*"
+  [headers.values]
+    Cache-Control = "public, max-age=2592000"
+
+[[headers]]
+  for = "/planet/*"
+  [headers.values]
+    Cache-Control = "public, max-age=2592000"
+
+[[headers]]
+  for = "/fonts/*"
+  [headers.values]
+    Cache-Control = "public, max-age=31536000, immutable"

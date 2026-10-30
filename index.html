@@ -20,8 +20,45 @@
       content="reactjs, react, porfolio-app, three-js, modern-ui/ux, js, javascript, html, css, tailwindcss"
     />
     <!-- Author -->
-    <meta name="author" content="Sanidhya Kr. Verma" />
-    <link rel="author" href="https://github.com/sanidhyy" />
+    <meta name="author" content="Kuber Jha" />
+    <link rel="author" href="https://github.com/kuberjha25" />
+
+    <!-- Lite mode for slow devices / connections (adds class="lite" to <html>).
+         Force it on or off with ?lite=1 or ?lite=0 in the URL. -->
+    <script>
+      (function () {
+        try {
+          var q = new URLSearchParams(location.search).get("lite");
+          var n = navigator, c = n.connection || {};
+          var lite =
+            q === "1" ||
+            (q !== "0" &&
+              (c.saveData === true ||
+                /(^|-)2g$|^3g$/.test(c.effectiveType || "") ||
+                (n.deviceMemory && n.deviceMemory <= 2) ||
+                (n.deviceMemory && n.deviceMemory <= 4 && n.hardwareConcurrency <= 4) ||
+                matchMedia("(prefers-reduced-motion: reduce)").matches));
+          var mobile = matchMedia("(max-width: 767px)").matches;
+          var html = document.documentElement;
+          if (lite) html.classList.add("lite");
+          // Start downloading the first hero frame right away.
+          var l = document.createElement("link");
+          l.rel = "preload";
+          l.as = "image";
+          l.href = "/hero/" + (mobile ? "m" : "d") + "/000.webp";
+          document.head.appendChild(l);
+        } catch (e) {}
+      })();
+    </script>
+
+    <!-- Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      rel="stylesheet"
+      href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700;900&display=swap"
+    />
+    <link rel="preload" href="/fonts/kuber.woff2" as="font" type="font/woff2" crossorigin />
 
     <!-- Icon -->
     <link rel="icon" type="image/svg+xml" href="/favicon.ico" sizes="any" />

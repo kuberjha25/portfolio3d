@@ -1,85 +1,57 @@
-import { useState, useEffect } from "react";
+import { lazy, Suspense, useEffect, useState } from "react";
 import { BrowserRouter } from "react-router-dom";
 import {
   About,
   Contact,
   Experience,
-  Feedbacks,
   Hero,
   Navbar,
   Tech,
   Works,
-  StarsCanvas,
 } from "./components";
 import Footer from "./components/footer";
 import ErrorBoundary from "./components/ErrorBoundary";
 import MainLoader from "./components/MainLoader";
 import { LanguageProvider } from "./context/LanguageContext";
 import Hobbies from "./components/hobbies";
+import { isLite } from "./utils/device";
+import { heroReady } from "./utils/heroReady";
+
+// three.js is only needed for the stars, so it loads after the first screen.
+const StarsCanvas = lazy(() => import("./components/canvas/stars"));
+
+// Close the loader after at most this long, even if the hero image is slow.
+const MAX_LOADER_MS = 4000;
 
 const App = () => {
-  const [hide, setHide] = useState(true);
+  const [hide] = useState(true);
+  const [ready, setReady] = useState(false);
   const [isLoading, setIsLoading] = useState(true);
+  const [lite] = useState(isLite);
 
   useEffect(() => {
-    let isMounted = true;
-    let minTimerDone = false;
-    let assetsLoaded = false;
-
-    // Minimum 2 seconds loader display
-    const minTimer = setTimeout(() => {
-      if (isMounted) {
-        minTimerDone = true;
-        if (assetsLoaded) {
-          setIsLoading(false);
-        }
-      }
-    }, 2500);
-
-    // Preload critical assets
-    const preloadAssets = async () => {
-      // Get all images on the page
-      const images = document.querySelectorAll("img");
-      const imagePromises = Array.from(images).map((img) => {
-        if (img.complete) return Promise.resolve();
-        return new Promise((resolve) => {
-          img.onload = resolve;
-          img.onerror = resolve;
-        });
-      });
-
-      // Wait for images or timeout after 5 seconds
-      await Promise.race([
-        Promise.all(imagePromises),
-        new Promise((resolve) => setTimeout(resolve, 5000)),
-      ]);
-
-      if (isMounted) {
-        assetsLoaded = true;
-        if (minTimerDone) {
-          setIsLoading(false);
-        }
-      }
-    };
-
-    preloadAssets();
-
+    let alive = true;
+    const done = () => alive && setReady(true);
+    heroReady.then(done);
+    const timer = setTimeout(done, MAX_LOADER_MS);
     return () => {
-      isMounted = false;
-      clearTimeout(minTimer);
+      alive = false;
+      clearTimeout(timer);
     };
   }, []);
 
   return (
     <LanguageProvider>
       <BrowserRouter>
-        {isLoading && <MainLoader onLoadingComplete={() => setIsLoading(false)} />}
+        {isLoading && (
+          <MainLoader ready={ready} onLoadingComplete={() => setIsLoading(false)} />
+        )}
         <div
           className={`relative z-0 bg-black transition-opacity duration-500 ${
             isLoading ? "opacity-0 h-screen overflow-hidden" : "opacity-100"
           }`}
         >
-          <div className="bg-hero-pattern bg-cover bg-no-repeat bg-center">
+          <div>
             <Navbar hide={hide} />
             <ErrorBoundary>
               <Hero />
@@ -91,7 +63,13 @@ const App = () => {
             <Experience />
             <Tech />
             <Works />
-            <StarsCanvas />
+            {!lite && !isLoading && (
+              <ErrorBoundary>
+                <Suspense fallback={null}>
+                  <StarsCanvas />
+                </Suspense>
+              </ErrorBoundary>
+            )}
             <ErrorBoundary>
               <Contact />
             </ErrorBoundary>

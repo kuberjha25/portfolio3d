@@ -80,6 +80,10 @@ const ProjectCard = ({ project, index }: ProjectCardProps) => {
           <img
             src={project.image}
             alt={project.title}
+            loading="lazy"
+            decoding="async"
+            width={800}
+            height={450}
             className="h-full w-full object-cover transition duration-500"
             style={{ transform: hovered ? "scale(1.1)" : "scale(1)" }}
           />
@@ -130,7 +134,7 @@ const ProjectCard = ({ project, index }: ProjectCardProps) => {
               onClick={(event) => event.stopPropagation()}
               className="flex flex-1 items-center justify-center gap-2 rounded-lg bg-gradient-to-r from-purple-500 to-cyan-500 py-2 text-sm font-medium text-white"
             >
-              <img src={preview} alt="" className="h-4 w-4" />
+              <img src={preview} alt="" loading="lazy" width={16} height={16} className="h-4 w-4" />
               Live Demo
             </a>
             {project.github && (
@@ -141,7 +145,7 @@ const ProjectCard = ({ project, index }: ProjectCardProps) => {
                 onClick={(event) => event.stopPropagation()}
                 className="flex items-center justify-center rounded-lg border border-[#7042f88b] px-4 py-2 text-sm text-gray-300 transition hover:bg-[#7042f8] hover:text-white"
               >
-                <img src={githubIcon} alt="GitHub" className="h-5 w-5" />
+                <img src={githubIcon} alt="GitHub" loading="lazy" width={20} height={20} className="h-5 w-5" />
               </a>
             )}
           </div>

@@ -1,17 +1,25 @@
+import { createContext, useContext, useRef } from "react";
 import { motion } from "framer-motion";
 import { SectionWrapper } from "../hoc";
 import { styles } from "../styles";
 import { fadeIn, textVariant } from "../utils/motion";
 import { useLanguage } from "../context/LanguageContext";
+import { isLite } from "../utils/device";
+import { useInView } from "../utils/useInView";
+
+// Floating only runs while the section is on screen (and never in lite mode).
+const FloatContext = createContext(false);
 
 const FloatingElement = ({ children, delay, className }: { children: React.ReactNode, delay: number, className: string }) => {
+  const floating = useContext(FloatContext);
   return (
     <motion.div
       initial={{ y: 0 }}
-      animate={{
-        y: [0, -15, 0],
-        rotate: [0, 2, -2, 0]
-      }}
+      animate={
+        floating
+          ? { y: [0, -15, 0], rotate: [0, 2, -2, 0] }
+          : { y: 0, rotate: 0 }
+      }
       transition={{
         duration: 6,
         repeat: Infinity,
@@ -59,8 +67,12 @@ const ReadingIcon = () => (
 
 export const Hobbies = () => {
   const { t } = useLanguage();
+  const areaRef = useRef<HTMLDivElement>(null);
+  const inView = useInView(areaRef);
+  const floating = inView && !isLite();
 
   return (
+    <FloatContext.Provider value={floating}>
     <SectionWrapper idName="hobbies">
       <div className="relative w-full overflow-hidden min-h-[800px] py-10">
         <motion.div variants={textVariant()} className="relative z-10 text-center sm:text-left">
@@ -69,13 +81,13 @@ export const Hobbies = () => {
         </motion.div>
 
         <motion.p
-          variants={fadeIn("", "", 0.1, 1)}
+          variants={fadeIn(undefined, undefined, 0.1, 1)}
           className="mt-4 text-secondary text-[17px] max-w-3xl leading-[30px] relative z-10 mx-auto sm:mx-0 text-center sm:text-left"
         >
           {t('hobbies.description')}
         </motion.p>
 
-        <div className="relative w-full h-[900px] md:h-[600px] mt-10">
+        <div ref={areaRef} className="relative w-full h-[900px] md:h-[600px] mt-10">
           {/* Football */}
           <FloatingElement delay={0} className="top-[0%] md:top-[10%] left-[2%] md:left-[10%] group">
             <div className="bg-black/40 backdrop-blur-md border border-white/10 p-6 rounded-2xl w-[280px] md:w-[300px] shadow-2xl hover:bg-black/60 transition-colors duration-300">
@@ -128,15 +140,16 @@ export const Hobbies = () => {
             </div>
           </FloatingElement>
 
-          {/* Background decorative elements */}
+          {/* Background glows (radial gradients instead of blur filters: much cheaper to draw) */}
           <div className="absolute inset-0 pointer-events-none">
-             <div className="absolute top-1/4 left-1/4 w-64 h-64 bg-[#915eff] rounded-full mix-blend-multiply filter blur-[128px] opacity-20"></div>
-             <div className="absolute top-1/3 right-1/4 w-64 h-64 bg-[#ff5e91] rounded-full mix-blend-multiply filter blur-[128px] opacity-20"></div>
-             <div className="absolute bottom-1/4 left-1/3 w-64 h-64 bg-[#5eff91] rounded-full mix-blend-multiply filter blur-[128px] opacity-20"></div>
+             <div className="absolute top-1/4 left-1/4 w-[32rem] h-[32rem] -translate-x-1/4 -translate-y-1/4 rounded-full bg-[radial-gradient(circle,rgba(145,94,255,0.12),transparent_65%)]"></div>
+             <div className="absolute top-1/3 right-1/4 w-[32rem] h-[32rem] translate-x-1/4 -translate-y-1/4 rounded-full bg-[radial-gradient(circle,rgba(255,94,145,0.12),transparent_65%)]"></div>
+             <div className="absolute bottom-1/4 left-1/3 w-[32rem] h-[32rem] -translate-x-1/4 translate-y-1/4 rounded-full bg-[radial-gradient(circle,rgba(94,255,145,0.10),transparent_65%)]"></div>
           </div>
         </div>
       </div>
     </SectionWrapper>
+    </FloatContext.Provider>
   );
 };
 

@@ -16,9 +16,6 @@ export default {
         inter: ["Inter", "sans-serif"],
         kuber: ["Kuber", "sans-serif"],
       },
-      backgroundImage: {
-        "hero-pattern": "url('/src/assets/herobg.png')",
-      },
       animation: {
         "spin-slow": "spin 8s linear infinite",
       },

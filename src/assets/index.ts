@@ -1,8 +1,5 @@
-// src/assets/index.ts - CORRECTED VERSION
-
-// General imports
+// General
 import backend from "./backend.png";
-import bulb from "./bulb.svg";
 import close from "./close.svg";
 import creator from "./creator.png";
 import logo from "./logo.svg";
@@ -12,55 +9,46 @@ import preview from "./preview.png";
 import web from "./web.png";
 
 // Tech icons
-import css from "./tech/css.png";
-import docker from "./tech/docker.png";
-import figma from "./tech/figma.png";
-import git from "./tech/git.png";
-import html from "./tech/html.png";
-import javascript from "./tech/javascript.png";
-import mongodb from "./tech/mongodb.png";
-import nodejs from "./tech/nodejs.png";
-import reactjs from "./tech/reactjs.png";
-import redux from "./tech/redux.png";
-import tailwind from "./tech/tailwind.png";
+import android from "./tech/android.webp";
+import aws from "./tech/aws.webp";
+import css from "./tech/css.webp";
+import docker from "./tech/docker.webp";
+import expo from "./tech/expo.webp";
+import express from "./tech/express.webp";
+import figma from "./tech/figma.webp";
+import firebase from "./tech/firebase.webp";
+import git from "./tech/git.webp";
+import html from "./tech/html.webp";
+import java from "./tech/java.webp";
+import javascript from "./tech/javascript.webp";
+import mongodb from "./tech/mongodb.webp";
+import mssql from "./tech/mssql.webp";
+import mui from "./tech/mui.webp";
+import mysql from "./tech/mysql.webp";
+import nextjs from "./tech/next.webp";
+import nodejs from "./tech/nodejs.webp";
+import postgresql from "./tech/postgresql.webp";
+import reactjs from "./tech/reactjs.webp";
+import reactnative from "./tech/reactnative.webp";
+import redux from "./tech/redux.webp";
+import spring from "./tech/spring.webp";
+import tailwind from "./tech/tailwind.webp";
 import threejs from "./tech/threejs.svg";
-import typescript from "./tech/typescript.png";
+import typescript from "./tech/typescript.webp";
+import vite from "./tech/vite.webp";
 
-// NEW TECH ICONS (Add these - ये missing हैं)
-import nextjs from "./tech/next.png";
-import express from "./tech/express.png";
-import java from "./tech/java.png";
-import spring from "./tech/spring.png";
-import postgresql from "./tech/postgresql.png";
-import mysql from "./tech/mysql.png";
-import mssql from "./tech/mssql.png";
-import firebase from "./tech/firebase.png";
-import reactnative from "./tech/reactnative.png";
-import expo from "./tech/expo.png";
-import android from "./tech/android.png";
-import aws from "./tech/aws.png";
-import mui from "./tech/mui.png";
-import vite from "./tech/vite.png";
-
-// Company logos (OLD - will remove later)
-import meta from "./company/meta.png";
-import shopify from "./company/shopify.png";
-import starbucks from "./company/starbucks.png";
-import tesla from "./company/tesla.png";
-
-// NEW COMPANY LOGOS (YOUR COMPANIES)
-import paulmerchants from "./company/paulmerchants.png";
+// Company logos
+import cuemath from "./company/cuemath.webp";
+import paulmerchants from "./company/paulmerchants.webp";
 import retailScan from "./company/retailScan.webp";
-import tcts from "./company/tcts.jpg";
-import cuemath from "./company/cuemath.png";
+import tcts from "./company/tcts.webp";
 
 // Project images
-import digiwallet from "./projects/digiwallet.png";
-import wheeldeal from "./projects/wheeldeal.png";
-import medicarepro from "./projects/medicarepro.png";
-import reelsync from "./projects/reelsync.png";
-import goldpe from "./projects/goldpe.png";
-// import edulearn from "./projects/edulearn.png";
+import digiwallet from "./projects/digiwallet.webp";
+import goldpe from "./projects/goldpe.webp";
+import medicarepro from "./projects/medicarepro.webp";
+import reelsync from "./projects/reelsync.webp";
+import wheeldeal from "./projects/wheeldeal.webp";
 
 // User testimonials
 import user1 from "./testimonials/user1.jpg";
@@ -68,17 +56,15 @@ import user2 from "./testimonials/user2.jpg";
 import user3 from "./testimonials/user3.jpg";
 
 // Social icons
+import email from "./socials/email.svg";
 import github from "./socials/github.svg";
 import linkedin from "./socials/linkedin.svg";
 import twitter from "./socials/twitter.svg";
 import youtube from "./socials/youtube.svg";
-import email from "./socials/email.svg";
 
-// EXPORTS
 export {
   // General
   backend,
-  bulb,
   close,
   creator,
   logo,
@@ -86,63 +72,58 @@ export {
   mobile,
   preview,
   web,
-  
+
   // Tech
-  css,
-  docker,
-  figma,
-  git,
-  html,
-  javascript,
-  mongodb,
-  nodejs,
-  reactjs,
-  redux,
-  tailwind,
-  typescript,
-  threejs,
-  nextjs,
-  express,
-  java,
-  spring,
-  postgresql,
-  mysql,
-  mssql,
-  firebase,
-  reactnative,
-  expo,
   android,
   aws,
+  css,
+  docker,
+  expo,
+  express,
+  figma,
+  firebase,
+  git,
+  html,
+  java,
+  javascript,
+  mongodb,
+  mssql,
   mui,
+  mysql,
+  nextjs,
+  nodejs,
+  postgresql,
+  reactjs,
+  reactnative,
+  redux,
+  spring,
+  tailwind,
+  threejs,
+  typescript,
   vite,
-  
+
   // Companies
-  meta,
-  shopify,
-  starbucks,
-  tesla,
+  cuemath,
   paulmerchants,
   retailScan,
   tcts,
-  cuemath,
-  
+
   // Projects
   digiwallet,
-  wheeldeal,
+  goldpe,
   medicarepro,
   reelsync,
-  goldpe,
-  // edulearn,
-  
+  wheeldeal,
+
   // Testimonials
   user1,
   user2,
   user3,
-  
+
   // Socials
+  email,
   github,
   linkedin,
   twitter,
   youtube,
-  email,
 };

@@ -1,8 +1,6 @@
-@import url("https://fonts.googleapis.com/css2?family=Poppins:wght@100;200;300;400;500;600;700;800;900&display=swap");
-
 @font-face {
   font-family: "Kuber";
-  src: url("/src/assets/fonts/FloodStdRegular.otf") format("opentype");
+  src: url("/fonts/kuber.woff2") format("woff2");
   font-weight: normal;
   font-style: normal;
   font-display: swap;
@@ -29,4 +27,28 @@ body {
 /* Custom font utility class */
 .font-kuber {
   font-family: "Kuber", "Poppins", sans-serif;
+}
+/* Lite mode: set on <html> for slow devices/connections.
+   Blur and blend effects are expensive on weak GPUs, so turn them off. */
+.lite *,
+.lite *::before,
+.lite *::after {
+  backdrop-filter: none !important;
+  -webkit-backdrop-filter: none !important;
+}
+
+@media (max-width: 767px) {
+  * {
+    backdrop-filter: none !important;
+    -webkit-backdrop-filter: none !important;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  * {
+    scroll-behavior: auto !important;
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
 }

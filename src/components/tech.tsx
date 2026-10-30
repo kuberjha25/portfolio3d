@@ -49,6 +49,10 @@ const SkillCategory = ({ title, technologies, delayStart }: SkillCategoryProps) 
               <img
                 src={technology.icon}
                 alt=""
+                loading="lazy"
+                decoding="async"
+                width={80}
+                height={80}
                 className="h-full w-full object-contain transition duration-300 group-hover:scale-110"
               />
               <span

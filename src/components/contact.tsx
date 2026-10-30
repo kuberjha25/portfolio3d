@@ -1,12 +1,37 @@
-import emailjs from "@emailjs/browser";
 import { motion } from "framer-motion";
-import { useState, useRef, type FormEvent, type ChangeEvent } from "react";
+import { lazy, Suspense, useState, useRef, type FormEvent, type ChangeEvent } from "react";
 import { toast } from "sonner";
 
-import { EarthCanvas } from "./canvas";
 import { SectionWrapper } from "../hoc";
 import { styles } from "../styles";
 import { slideIn } from "../utils/motion";
+import { isLite } from "../utils/device";
+import { useInView } from "../utils/useInView";
+
+// The 3D Earth (and three.js) only downloads when the contact section is close.
+const EarthCanvas = lazy(() => import("./canvas/earth"));
+
+const EarthSlot = () => {
+  const ref = useRef<HTMLDivElement>(null);
+  const near = useInView(ref, { margin: "400px", once: true });
+  const lite = isLite();
+
+  return (
+    <div ref={ref} className="h-full w-full">
+      {lite ? (
+        <div className="flex h-full w-full items-center justify-center">
+          <div className="aspect-square w-3/5 max-w-[320px] rounded-full bg-[radial-gradient(circle_at_35%_35%,#4f7bd8,#1d3570_55%,#060b1d)] shadow-[0_0_80px_rgba(79,123,216,0.35)]" />
+        </div>
+      ) : (
+        near && (
+          <Suspense fallback={null}>
+            <EarthCanvas />
+          </Suspense>
+        )
+      )}
+    </div>
+  );
+};
 
 // Contact
 export const Contact = () => {
@@ -104,24 +129,28 @@ export const Contact = () => {
       message: form.message,
     };
 
-    // 1. Send email to YOURSELF (notification)
-    const emailToYou = emailjs.send(
-      import.meta.env.VITE_APP_SERVICE_ID,
-      import.meta.env.VITE_APP_TEMPLATE_ID, // Your notification template
-      notificationParams,
-      import.meta.env.VITE_APP_EMAILJS_KEY
-    );
+    // emailjs is only downloaded when someone actually sends a message
+    import("@emailjs/browser")
+      .then(({ default: emailjs }) => {
+        // 1. Send email to YOURSELF (notification)
+        const emailToYou = emailjs.send(
+          import.meta.env.VITE_APP_SERVICE_ID,
+          import.meta.env.VITE_APP_TEMPLATE_ID, // Your notification template
+          notificationParams,
+          import.meta.env.VITE_APP_EMAILJS_KEY
+        );
 
-    // 2. Send auto-reply to USER
-    const autoReplyToUser = emailjs.send(
-      import.meta.env.VITE_APP_SERVICE_ID,
-      import.meta.env.VITE_APP_AUTOREPLY_TEMPLATE_ID, // Auto-reply template ID
-      autoReplyParams,
-      import.meta.env.VITE_APP_EMAILJS_KEY
-    );
+        // 2. Send auto-reply to USER
+        const autoReplyToUser = emailjs.send(
+          import.meta.env.VITE_APP_SERVICE_ID,
+          import.meta.env.VITE_APP_AUTOREPLY_TEMPLATE_ID, // Auto-reply template ID
+          autoReplyParams,
+          import.meta.env.VITE_APP_EMAILJS_KEY
+        );
 
-    // Send both emails in parallel
-    Promise.all([emailToYou, autoReplyToUser])
+        // Send both emails in parallel
+        return Promise.all([emailToYou, autoReplyToUser]);
+      })
       .then(() => {
         toast.success("Message sent! Check your email for confirmation.");
       })
@@ -274,7 +303,7 @@ export const Contact = () => {
           variants={slideIn("right", "tween", 0.2, 1)}
           className="xl:flex-1 xl:h-auto md:h-[550px] h-[350px]"
         >
-          <EarthCanvas />
+          <EarthSlot />
         </motion.div>
       </div>
     </SectionWrapper>

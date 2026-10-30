@@ -24,7 +24,7 @@ const Footer = () => {
                 rel="noreferrer noopener"
                 className="block opacity-60 transition hover:opacity-100"
               >
-                <img src={social.icon} alt={social.name} className="h-5 w-5" />
+                <img src={social.icon} alt={social.name} loading="lazy" width={20} height={20} className="h-5 w-5" />
               </Link>
             </li>
           ))}

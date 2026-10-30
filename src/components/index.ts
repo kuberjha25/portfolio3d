@@ -1,13 +1,6 @@
-// Contains components to be exported in other files
-// ! Don't remove anything from here
-
+// 3D canvases (EarthCanvas, StarsCanvas) are not exported here on purpose:
+// they're lazy-loaded so three.js stays out of the first download.
 import { About } from "./about";
-import {
-  // BallCanvas,
-  // ComputersCanvas,
-  EarthCanvas,
-  StarsCanvas,
-} from "./canvas";
 import { Contact } from "./contact";
 import { Experience } from "./experience";
 import { Feedbacks } from "./feedbacks";
@@ -19,16 +12,12 @@ import { Works } from "./works";
 
 export {
   About,
-  // BallCanvas,
-  // ComputersCanvas,
   Contact,
-  EarthCanvas,
   Experience,
   Feedbacks,
   Hero,
   Hobbies,
   Navbar,
-  StarsCanvas,
   Tech,
   Works,
 };

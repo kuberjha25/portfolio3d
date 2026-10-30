@@ -198,19 +198,16 @@ Useful resources and dependencies that are used in 3D Portfolio.
 - [autoprefixer](https://www.npmjs.com/package/autoprefixer): ^10.5.0
 - [clsx](https://www.npmjs.com/package/clsx): ^2.1.1
 - [framer-motion](https://www.npmjs.com/package/framer-motion): ^12.38.0
-- [gsap](https://www.npmjs.com/package/gsap): ^3.15.0
 - [maath](https://www.npmjs.com/package/maath): ^0.10.8
 - [postcss](https://www.npmjs.com/package/postcss): ^8.5.10
 - [react](https://www.npmjs.com/package/react): ^19.2.5
 - [react-dom](https://www.npmjs.com/package/react-dom): ^19.2.5
 - [react-router-dom](https://www.npmjs.com/package/react-router-dom): ^7.14.0
-- [react-tilt](https://www.npmjs.com/package/react-tilt): ^1.0.2
 - [react-vertical-timeline-component](https://www.npmjs.com/package/react-vertical-timeline-component): ^4.0.0
 - [sonner](https://www.npmjs.com/package/sonner): ^2.0.7
 - [tailwind-merge](https://www.npmjs.com/package/tailwind-merge): ^3.5.0
 - [tailwindcss](https://www.npmjs.com/package/tailwindcss): ^3.4.17
 - [three](https://www.npmjs.com/package/three): ^0.184.0
-- [three-stdlib](https://www.npmjs.com/package/three-stdlib): ^2.36.1
 - [typescript](https://www.npmjs.com/package/typescript): ^6.0.3
 - [vite](https://www.npmjs.com/package/vite): ^8.0.9
 

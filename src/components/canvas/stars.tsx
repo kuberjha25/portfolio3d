@@ -1,18 +1,19 @@
-import { Points, PointMaterial, Preload } from "@react-three/drei";
-import { Canvas, type PointsProps, useFrame } from "@react-three/fiber";
+import { Points, PointMaterial } from "@react-three/drei";
+import { Canvas, useFrame } from "@react-three/fiber";
 import * as random from "maath/random";
-import { useRef, Suspense, useState } from "react";
+import { useRef, useState } from "react";
 import type { Points as PointsType } from "three";
 
+import { useInView } from "../../utils/useInView";
+
 // Stars
-const Stars = (props: PointsProps) => {
+const Stars = () => {
   const ref = useRef<PointsType | null>(null);
-  // For each star
   const [sphere] = useState(() =>
-    random.inSphere(new Float32Array(6000), { radius: 1.2 }),
+    random.inSphere(new Float32Array(6000), { radius: 1.2 }) as Float32Array,
   );
 
-  // Rotate multiple stars
+  // Slowly rotate the star field
   useFrame((_state, delta) => {
     if (ref.current) {
       ref.current.rotation.x -= delta / 10;
@@ -22,20 +23,12 @@ const Stars = (props: PointsProps) => {
 
   return (
     <group rotation={[0, 0, Math.PI / 4]}>
-      {/* Points */}
-      <Points
-        ref={ref}
-        positions={new Float32Array(sphere)}
-        stride={3}
-        frustumCulled
-        {...props}
-      >
-        {/* Each point material */}
+      <Points ref={ref} positions={sphere} stride={3} frustumCulled>
         <PointMaterial
           transparent
           color="#f272c8"
           size={0.002}
-          sizeAttentuation
+          sizeAttenuation
           depthWrite={false}
         />
       </Points>
@@ -44,19 +37,24 @@ const Stars = (props: PointsProps) => {
 };
 
 // Stars Canvas
+// The outer box spans all the sections it sits behind, but the canvas itself is
+// sticky and only one screen tall, so the GPU only draws what's visible.
 const StarsCanvas = () => {
-  return (
-    <div className="absolute inset-0 z-[-1] pointer-events-none">
-      {/* Canvas */}
-      <Canvas camera={{ position: [0, 0, 2.5] }}>
-        {/* Show stars if not fallback */}
-        <Suspense fallback={null}>
-          <Stars />
-        </Suspense>
+  const boxRef = useRef<HTMLDivElement>(null);
+  const inView = useInView(boxRef);
 
-        {/* preload all */}
-        <Preload all />
-      </Canvas>
+  return (
+    <div ref={boxRef} className="absolute inset-0 z-[-1] pointer-events-none">
+      <div className="sticky top-0 h-screen w-full">
+        <Canvas
+          dpr={[1, 1.5]}
+          frameloop={inView ? "always" : "never"}
+          gl={{ antialias: false, powerPreference: "low-power" }}
+          camera={{ position: [0, 0, 2.5] }}
+        >
+          <Stars />
+        </Canvas>
+      </div>
     </div>
   );
 };

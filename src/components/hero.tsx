@@ -1,125 +1,135 @@
-"use client";
-
 import { type CSSProperties, useEffect, useRef, useState } from "react";
-import { useScroll, useTransform } from "framer-motion";
+import { useMotionValueEvent, useScroll, useTransform } from "framer-motion";
 import Overlay from "./Overlay";
+import { isLite, isMobileWidth } from "../utils/device";
+import { markHeroReady } from "../utils/heroReady";
 
-const FRAME_COUNT = 191;
-const PAD_LENGTH = 3;
-const FRAME_BASE_PATH = `${import.meta.env.BASE_URL}sequence/`;
+const FRAME_COUNT = 96;
 const NAV_HEIGHT = 66;
+const MAX_PARALLEL = 6;
 
-function getFramePath(index: number) {
-  const paddedIndex = (index + 1).toString().padStart(PAD_LENGTH, "0");
-  return `${FRAME_BASE_PATH}frame_${paddedIndex}_delay-0.042s.webp`;
-  // return `${FRAME_BASE_PATH}ezgif-frame-${paddedIndex}.png`;
-}
+// Phones get smaller frames (960px wide), desktops get 1280px.
+const FRAME_DIR = `${import.meta.env.BASE_URL}hero/${isMobileWidth() ? "m" : "d"}/`;
+const framePath = (i: number) => `${FRAME_DIR}${String(i).padStart(3, "0")}.webp`;
 
-function drawHeroFrame(
-  ctx: CanvasRenderingContext2D,
-  canvas: HTMLCanvasElement,
-  img: HTMLImageElement
-) {
-  // If we just want to fill the canvas, we can use the canvas's internal resolution
-  // and CSS object-cover will handle the rest. This completely removes the laggy ctx.filter.
-  if (canvas.width !== img.naturalWidth || canvas.height !== img.naturalHeight) {
-    canvas.width = img.naturalWidth;
-    canvas.height = img.naturalHeight;
+// Load order: first frame, then every 32nd, 16th, 8th ... so scrolling works
+// early with a rough animation that gets smoother as more frames arrive.
+function loadOrder(count: number) {
+  const order: number[] = [0];
+  const seen = new Set(order);
+  for (let step = 32; step >= 1; step /= 2) {
+    for (let i = 0; i < count; i += step) {
+      if (!seen.has(i)) {
+        seen.add(i);
+        order.push(i);
+      }
+    }
   }
-  ctx.clearRect(0, 0, canvas.width, canvas.height);
-  ctx.drawImage(img, 0, 0);
+  return order;
 }
 
 export function Hero() {
+  const [lite] = useState(isLite);
   const containerRef = useRef<HTMLDivElement>(null);
   const canvasRef = useRef<HTMLCanvasElement>(null);
-  const imagesRef = useRef<(HTMLImageElement | null)[]>([]);
-  const [loadedCount, setLoadedCount] = useState(0);
-  const hasLoadedFrames = loadedCount > 50; // Wait for at least 50 frames to load
+  const framesRef = useRef<(HTMLImageElement | null)[]>([]);
+  const drawnRef = useRef<HTMLImageElement | null>(null);
+  const rafRef = useRef(0);
 
   const { scrollYProgress } = useScroll({
     target: containerRef,
     offset: ["start start", "end end"],
   });
-
   const frameIndex = useTransform(scrollYProgress, [0, 1], [0, FRAME_COUNT - 1]);
 
-  useEffect(() => {
-    let isMounted = true;
-    imagesRef.current = Array.from({ length: FRAME_COUNT }, () => null);
-
-    const preloadFrame = (index: number) => {
-      const img = new Image();
-
-      img.onload = () => {
-        if (!isMounted) return;
-        imagesRef.current[index] = img;
-        setLoadedCount((count) => count + 1);
-      };
-
-      img.onerror = () => {
-        if (!isMounted) return;
-        console.warn(`Could not load hero frame: ${getFramePath(index)}`);
-      };
-
-      img.src = getFramePath(index);
-    };
-
-    for (let i = 0; i < FRAME_COUNT; i++) {
-      preloadFrame(i);
-    }
-
-    return () => {
-      isMounted = false;
-    };
-  }, []);
-
-  useEffect(() => {
-    if (!hasLoadedFrames) return;
-
+  // Draw the loaded frame closest to the current scroll position,
+  // but only if it differs from what's already on the canvas.
+  const draw = () => {
+    rafRef.current = 0;
     const canvas = canvasRef.current;
     const ctx = canvas?.getContext("2d");
     if (!canvas || !ctx) return;
 
-    let animationFrameId: number;
+    const frames = framesRef.current;
+    const target = Math.round(frameIndex.get());
+    let img: HTMLImageElement | null = null;
+    for (let d = 0; d < FRAME_COUNT && !img; d++) {
+      img = frames[target - d] ?? frames[target + d] ?? null;
+    }
+    if (!img || img === drawnRef.current) return;
 
-    const render = () => {
-      const currentIndex = Math.min(
-        FRAME_COUNT - 1,
-        Math.max(0, Math.floor(frameIndex.get()))
-      );
+    if (canvas.width !== img.naturalWidth || canvas.height !== img.naturalHeight) {
+      canvas.width = img.naturalWidth;
+      canvas.height = img.naturalHeight;
+    }
+    ctx.drawImage(img, 0, 0);
+    drawnRef.current = img;
+    markHeroReady();
+  };
 
-      const img =
-        imagesRef.current[currentIndex] ??
-        imagesRef.current.find((loadedImage) => loadedImage !== null);
+  const scheduleDraw = () => {
+    if (!rafRef.current) rafRef.current = requestAnimationFrame(draw);
+  };
 
-      if (img?.complete && img.naturalWidth !== 0) {
-        drawHeroFrame(ctx, canvas, img);
-      }
+  useMotionValueEvent(frameIndex, "change", () => {
+    if (!lite) scheduleDraw();
+  });
 
-      animationFrameId = requestAnimationFrame(render);
+  useEffect(() => {
+    if (lite) return;
+    let cancelled = false;
+    framesRef.current = Array.from({ length: FRAME_COUNT }, () => null);
+    const queue = loadOrder(FRAME_COUNT);
+
+    const next = () => {
+      const i = queue.shift();
+      if (i === undefined || cancelled) return;
+      const img = new Image();
+      img.decoding = "async";
+      img.src = framePath(i);
+      img
+        .decode()
+        .then(() => {
+          if (cancelled) return;
+          framesRef.current[i] = img;
+          scheduleDraw();
+        })
+        .catch(() => {})
+        .finally(next);
     };
 
-    // Remove the window resize listener since the canvas size is now based on the image size
-    // and CSS object-cover handles the responsiveness perfectly.
-    render();
+    for (let k = 0; k < MAX_PARALLEL; k++) next();
 
     return () => {
-      cancelAnimationFrame(animationFrameId);
+      cancelled = true;
+      if (rafRef.current) cancelAnimationFrame(rafRef.current);
+      rafRef.current = 0;
     };
-  }, [hasLoadedFrames, frameIndex]);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [lite]);
+
+  const mediaClass =
+    "absolute inset-0 h-full w-full object-cover object-[47%_center] sm:object-[center_30%] md:object-[center_20%]";
 
   return (
     <div
       ref={containerRef}
-      className="relative h-[400svh] w-full bg-[#121212] pt-15"
+      className={`relative w-full bg-[#121212] pt-15 ${lite ? "h-[160svh]" : "h-[400svh]"}`}
       style={{ "--nav-height": `${NAV_HEIGHT}px` } as CSSProperties}
     >
       <div className="sticky top-[var(--nav-height)] h-[calc(100svh-var(--nav-height))] w-full overflow-hidden">
-        <canvas
-          ref={canvasRef}
-          className="absolute inset-0 w-full h-full object-cover object-[47%_center] sm:object-[center_30%] md:object-[center_20%]"
-        />
+        {lite ? (
+          <img
+            src={framePath(0)}
+            alt=""
+            fetchPriority="high"
+            onLoad={markHeroReady}
+            onError={markHeroReady}
+            className={mediaClass}
+          />
+        ) : (
+          <canvas ref={canvasRef} className={mediaClass} />
+        )}
         <div className="pointer-events-none absolute inset-x-0 bottom-0 z-[5] h-1/2 bg-gradient-to-b from-transparent via-[#121212]/55 to-[#121212]" />
         <Overlay scrollYProgress={scrollYProgress} />
       </div>
