@@ -30,6 +30,7 @@ import {
   typescript,
   vite,
   // Companies
+  chaupal,
   cuemath,
   paulmerchants,
   retailScan,
@@ -205,6 +206,8 @@ export type Experience = {
   location?: string;
   date: string;
   logo?: string;
+  // true when the logo is a full-bleed square (fills the tile edge to edge)
+  logoFill?: boolean;
   monogram: string;
   current?: boolean;
   promoted?: string;
@@ -219,6 +222,8 @@ export const EXPERIENCES: Experience[] = [
     company: "Chaupal",
     location: "Regional OTT platform",
     date: "May 2026 — Present",
+    logo: chaupal,
+    logoFill: true,
     monogram: "C",
     current: true,
     summary:

@@ -14,11 +14,24 @@ const CompanyMark = ({ item }: { item: ExperienceItem }) => (
   <div
     className={cn(
       "flex h-12 w-12 shrink-0 items-center justify-center overflow-hidden rounded-2xl border",
-      item.current ? "border-accent/40 bg-accent/10" : "border-white/10 bg-white",
+      item.logo && item.logoFill
+        ? "border-white/10"
+        : item.logo
+          ? "border-white/10 bg-white"
+          : "border-accent/40 bg-accent/10",
+      item.current && "ring-2 ring-accent/30 ring-offset-2 ring-offset-ink",
     )}
   >
     {item.logo ? (
-      <img src={item.logo} alt="" loading="lazy" decoding="async" width={48} height={48} className="h-8 w-8 object-contain" />
+      <img
+        src={item.logo}
+        alt=""
+        loading="lazy"
+        decoding="async"
+        width={48}
+        height={48}
+        className={item.logoFill ? "h-full w-full object-cover" : "h-8 w-8 object-contain"}
+      />
     ) : (
       <span className="font-serif text-2xl italic text-accent">{item.monogram}</span>
     )}

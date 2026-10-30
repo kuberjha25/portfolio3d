@@ -34,6 +34,7 @@ import typescript from "./tech/typescript.webp";
 import vite from "./tech/vite.webp";
 
 // Company logos
+import chaupal from "./company/chaupal.webp";
 import cuemath from "./company/cuemath.webp";
 import paulmerchants from "./company/paulmerchants.webp";
 import retailScan from "./company/retailScan.webp";
@@ -95,6 +96,7 @@ export {
   vite,
 
   // Companies
+  chaupal,
   cuemath,
   paulmerchants,
   retailScan,
