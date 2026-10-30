@@ -20,13 +20,52 @@
 }
 
 /* Default font */
+html {
+  background: #0a0a0a;
+}
+
 body {
-  font-family: "Poppins", sans-serif;
+  font-family: "Inter", system-ui, sans-serif;
+  background: #0a0a0a;
+  color: #f2ede6;
+  -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
+}
+
+::selection {
+  background: #ff8a4c;
+  color: #0a0a0a;
 }
 
 /* Custom font utility class */
 .font-kuber {
-  font-family: "Kuber", "Poppins", sans-serif;
+  font-family: "Kuber", "Inter", sans-serif;
+}
+
+/* Italic serif keyword, used to highlight words inside headings */
+.kw {
+  font-family: "Instrument Serif", Georgia, serif;
+  font-style: italic;
+  font-weight: 400;
+  letter-spacing: -0.01em;
+  background: linear-gradient(100deg, #ffd1b3 0%, #ff8a4c 55%, #ff6a3d 100%);
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+  padding-right: 0.06em;
+}
+
+/* Subtle grain-free noise substitute: a soft top glow for sections */
+.glow-top {
+  background: radial-gradient(60% 50% at 50% 0%, rgba(255, 138, 76, 0.08), transparent 70%);
+}
+
+/* Marquee strip: pause on hover, stop for lite / reduced motion */
+.marquee:hover .animate-marquee {
+  animation-play-state: paused;
+}
+.lite .animate-marquee {
+  animation: none;
 }
 /* Lite mode: set on <html> for slow devices/connections.
    Blur and blend effects are expensive on weak GPUs, so turn them off. */
@@ -51,4 +90,17 @@ body {
     animation-iteration-count: 1 !important;
     transition-duration: 0.01ms !important;
   }
+}
+
+/* Section anchors: leave room for the fixed navbar when jumping to #about etc. */
+.hash-span {
+  display: block;
+  height: 0;
+  overflow: hidden;
+  scroll-margin-top: 80px;
+}
+
+/* Devanagari letters break apart with wide letter-spacing, so turn it off in Hindi */
+html[lang="hi"] * {
+  letter-spacing: 0 !important;
 }

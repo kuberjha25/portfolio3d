@@ -48,7 +48,7 @@ export default function Overlay({ scrollYProgress }: OverlayProps) {
         Kuber Jha
       </motion.h1>
 
-      <span className="absolute bottom-6 right-4 max-w-[130px] text-right text-[10px] font-medium uppercase leading-none tracking-[0.08em] text-white drop-shadow-md sm:right-12 sm:max-w-none sm:text-base sm:tracking-[0.24em] md:right-24">
+      <span className="kw absolute bottom-5 right-4 text-right text-lg leading-none drop-shadow-md sm:right-12 sm:text-3xl md:right-24">
         {t('hero.role')}
       </span>
 
@@ -67,12 +67,12 @@ export default function Overlay({ scrollYProgress }: OverlayProps) {
             strokeWidth="1.5"
             fill="none"
             animate={{ rotate: 360 }}
-            transition={{ duration: 0.9, repeat: Infinity, ease: "linear" }}
+            transition={{ duration: 8, repeat: Infinity, ease: "linear" }}
             style={{ transformOrigin: "11px 11px" }}
           />
         </svg>
         <span className="text-[10px] font-medium uppercase leading-none tracking-[0.08em] text-white drop-shadow-md sm:text-base sm:tracking-[0.24em]">
-          Chandigarh, In
+          {t('hero.location')}
         </span>
       </div>
 

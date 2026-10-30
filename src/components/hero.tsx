@@ -1,11 +1,10 @@
-import { type CSSProperties, useEffect, useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { useMotionValueEvent, useScroll, useTransform } from "framer-motion";
 import Overlay from "./Overlay";
 import { isLite, isMobileWidth } from "../utils/device";
 import { markHeroReady } from "../utils/heroReady";
 
 const FRAME_COUNT = 96;
-const NAV_HEIGHT = 66;
 const MAX_PARALLEL = 6;
 
 // Phones get smaller frames (960px wide), desktops get 1280px.
@@ -114,10 +113,11 @@ export function Hero() {
   return (
     <div
       ref={containerRef}
-      className={`relative w-full bg-[#121212] pt-15 ${lite ? "h-[160svh]" : "h-[400svh]"}`}
-      style={{ "--nav-height": `${NAV_HEIGHT}px` } as CSSProperties}
+      id="top"
+      className={`relative w-full bg-[#0a0a0a] ${lite ? "h-[160svh]" : "h-[400svh]"}`}
     >
-      <div className="sticky top-[var(--nav-height)] h-[calc(100svh-var(--nav-height))] w-full overflow-hidden">
+      {/* Full-bleed: the floating navbar sits on top of the image */}
+      <div className="sticky top-0 h-[100svh] w-full overflow-hidden">
         {lite ? (
           <img
             src={framePath(0)}
@@ -130,7 +130,8 @@ export function Hero() {
         ) : (
           <canvas ref={canvasRef} className={mediaClass} />
         )}
-        <div className="pointer-events-none absolute inset-x-0 bottom-0 z-[5] h-1/2 bg-gradient-to-b from-transparent via-[#121212]/55 to-[#121212]" />
+        <div className="pointer-events-none absolute inset-x-0 top-0 z-[5] h-36 bg-gradient-to-b from-[#0a0a0a]/80 to-transparent" />
+        <div className="pointer-events-none absolute inset-x-0 bottom-0 z-[5] h-1/2 bg-gradient-to-b from-transparent via-[#0a0a0a]/55 to-[#0a0a0a]" />
         <Overlay scrollYProgress={scrollYProgress} />
       </div>
     </div>

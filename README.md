@@ -191,7 +191,6 @@ Useful resources and dependencies that are used in 3D Portfolio.
 - [@react-three/fiber](https://www.npmjs.com/package/@react-three/fiber): ^9.6.0
 - [@types/react](https://www.npmjs.com/package/@types/react): ^19.2.14
 - [@types/react-dom](https://www.npmjs.com/package/@types/react-dom): ^19.2.3
-- [@types/react-vertical-timeline-component](https://www.npmjs.com/package/@types/react-vertical-timeline-component): ^3.3.6
 - [@types/tailwindcss](https://www.npmjs.com/package/@types/tailwindcss): ^3.1.0
 - [@types/three](https://www.npmjs.com/package/@types/three): ^0.184.0
 - [@vitejs/plugin-react](https://www.npmjs.com/package/@vitejs/plugin-react): ^6.0.1
@@ -202,8 +201,6 @@ Useful resources and dependencies that are used in 3D Portfolio.
 - [postcss](https://www.npmjs.com/package/postcss): ^8.5.10
 - [react](https://www.npmjs.com/package/react): ^19.2.5
 - [react-dom](https://www.npmjs.com/package/react-dom): ^19.2.5
-- [react-router-dom](https://www.npmjs.com/package/react-router-dom): ^7.14.0
-- [react-vertical-timeline-component](https://www.npmjs.com/package/react-vertical-timeline-component): ^4.0.0
 - [sonner](https://www.npmjs.com/package/sonner): ^2.0.7
 - [tailwind-merge](https://www.npmjs.com/package/tailwind-merge): ^3.5.0
 - [tailwindcss](https://www.npmjs.com/package/tailwindcss): ^3.4.17

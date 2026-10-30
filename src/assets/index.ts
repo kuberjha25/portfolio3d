@@ -1,12 +1,8 @@
 // General
-import backend from "./backend.png";
 import close from "./close.svg";
-import creator from "./creator.png";
 import logo from "./logo.svg";
 import menu from "./menu.svg";
-import mobile from "./mobile.png";
 import preview from "./preview.png";
-import web from "./web.png";
 
 // Tech icons
 import android from "./tech/android.webp";
@@ -64,14 +60,10 @@ import youtube from "./socials/youtube.svg";
 
 export {
   // General
-  backend,
   close,
-  creator,
   logo,
   menu,
-  mobile,
   preview,
-  web,
 
   // Tech
   android,

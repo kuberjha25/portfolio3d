@@ -1,5 +1,4 @@
 import { lazy, Suspense, useEffect, useState } from "react";
-import { BrowserRouter } from "react-router-dom";
 import {
   About,
   Contact,
@@ -24,7 +23,6 @@ const StarsCanvas = lazy(() => import("./components/canvas/stars"));
 const MAX_LOADER_MS = 4000;
 
 const App = () => {
-  const [hide] = useState(true);
   const [ready, setReady] = useState(false);
   const [isLoading, setIsLoading] = useState(true);
   const [lite] = useState(isLite);
@@ -42,27 +40,26 @@ const App = () => {
 
   return (
     <LanguageProvider>
-      <BrowserRouter>
         {isLoading && (
           <MainLoader ready={ready} onLoadingComplete={() => setIsLoading(false)} />
         )}
         <div
-          className={`relative z-0 bg-black transition-opacity duration-500 ${
+          className={`relative z-0 bg-ink transition-opacity duration-500 ${
             isLoading ? "opacity-0 h-screen overflow-hidden" : "opacity-100"
           }`}
         >
           <div>
-            <Navbar hide={hide} />
+            <Navbar />
             <ErrorBoundary>
               <Hero />
             </ErrorBoundary>
           </div>
           <div className="relative z-0">
             <About />
-            <Hobbies />
             <Experience />
             <Tech />
             <Works />
+            <Hobbies />
             {!lite && !isLoading && (
               <ErrorBoundary>
                 <Suspense fallback={null}>
@@ -76,7 +73,6 @@ const App = () => {
           </div>
           <Footer />
         </div>
-      </BrowserRouter>
     </LanguageProvider>
   );
 };

@@ -1,4 +1,4 @@
-import React, { createContext, useContext, useState, ReactNode } from 'react';
+import React, { createContext, useContext, useEffect, useState, ReactNode } from 'react';
 import { en } from '../locales/en';
 import { hi } from '../locales/hi';
 import { fr } from '../locales/fr';
@@ -21,6 +21,11 @@ const LanguageContext = createContext<LanguageContextProps | undefined>(undefine
 
 export const LanguageProvider: React.FC<{ children: ReactNode }> = ({ children }) => {
   const [language, setLanguage] = useState<Language>('en');
+
+  // Keep <html lang> in sync (used by CSS, screen readers and translation tools)
+  useEffect(() => {
+    document.documentElement.lang = language;
+  }, [language]);
 
   const t = (key: string) => {
     const keys = key.split('.');

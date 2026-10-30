@@ -70,7 +70,7 @@ const MainLoader = ({ ready, onLoadingComplete }: LoaderProps) => {
             >
               <div className="relative h-0.5 overflow-hidden rounded-full bg-gray-800">
                 <div
-                  className="absolute left-0 top-0 h-full rounded-full bg-white transition-[width] duration-200"
+                  className="absolute left-0 top-0 h-full rounded-full bg-gradient-to-r from-accent-soft to-accent transition-[width] duration-200"
                   style={{ width: `${progress}%` }}
                 />
               </div>

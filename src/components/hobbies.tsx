@@ -1,155 +1,69 @@
-import { createContext, useContext, useRef } from "react";
+import type { ReactNode } from "react";
 import { motion } from "framer-motion";
+
 import { SectionWrapper } from "../hoc";
-import { styles } from "../styles";
 import { fadeIn, textVariant } from "../utils/motion";
 import { useLanguage } from "../context/LanguageContext";
-import { isLite } from "../utils/device";
-import { useInView } from "../utils/useInView";
+import { SectionHeading } from "./Rich";
 
-// Floating only runs while the section is on screen (and never in lite mode).
-const FloatContext = createContext(false);
-
-const FloatingElement = ({ children, delay, className }: { children: React.ReactNode, delay: number, className: string }) => {
-  const floating = useContext(FloatContext);
-  return (
-    <motion.div
-      initial={{ y: 0 }}
-      animate={
-        floating
-          ? { y: [0, -15, 0], rotate: [0, 2, -2, 0] }
-          : { y: 0, rotate: 0 }
-      }
-      transition={{
-        duration: 6,
-        repeat: Infinity,
-        repeatType: "reverse",
-        ease: "easeInOut",
-        delay: delay,
-      }}
-      className={`absolute ${className}`}
-    >
-      {children}
-    </motion.div>
-  );
+const ICONS: Record<string, ReactNode> = {
+  football: (
+    <>
+      <circle cx="12" cy="12" r="9" />
+      <path d="m12 7 4 3-1.5 4.5h-5L8 10z" />
+      <path d="M12 3v4M16 10l4.5-1.5M14.5 14.5 17 19M9.5 14.5 7 19M8 10 3.5 8.5" />
+    </>
+  ),
+  singing: (
+    <>
+      <rect x="9" y="3" width="6" height="11" rx="3" />
+      <path d="M5.5 11a6.5 6.5 0 0 0 13 0M12 17.5V21M8.5 21h7" />
+    </>
+  ),
+  coding: (
+    <>
+      <path d="m8 8-4 4 4 4M16 8l4 4-4 4M13.5 5l-3 14" />
+    </>
+  ),
+  reading: (
+    <>
+      <path d="M3 5.5C5.5 4 9 4 12 6c3-2 6.5-2 9-.5V19c-2.5-1.5-6-1.5-9 .5-3-2-6.5-2-9-.5z" />
+      <path d="M12 6v13.5" />
+    </>
+  ),
 };
 
-// Icons using SVG paths
-const FootballIcon = () => (
-  <svg viewBox="0 0 24 24" className="w-12 h-12 text-[#915eff]" fill="none" stroke="currentColor" strokeWidth="1.5">
-    <circle cx="12" cy="12" r="10" />
-    <path d="M12 2a15.3 15.3 0 014 10 15.3 15.3 0 01-4 10 15.3 15.3 0 01-4-10 15.3 15.3 0 014-10z" />
-    <path d="M2 12h20" />
-  </svg>
-);
-
-const SingingIcon = () => (
-  <svg viewBox="0 0 24 24" className="w-12 h-12 text-[#ff5e91]" fill="none" stroke="currentColor" strokeWidth="1.5">
-    <path d="M9 18V5l12-2v13" />
-    <circle cx="6" cy="18" r="3" />
-    <circle cx="18" cy="16" r="3" />
-  </svg>
-);
-
-const CodingIcon = () => (
-  <svg viewBox="0 0 24 24" className="w-12 h-12 text-[#5eff91]" fill="none" stroke="currentColor" strokeWidth="1.5">
-    <path d="M16 18l6-6-6-6M8 6l-6 6 6 6" />
-    <path d="M12 2l-2 20" />
-  </svg>
-);
-
-const ReadingIcon = () => (
-  <svg viewBox="0 0 24 24" className="w-12 h-12 text-[#5e91ff]" fill="none" stroke="currentColor" strokeWidth="1.5">
-    <path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z" />
-    <path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z" />
-  </svg>
-);
+const HOBBIES = ["football", "singing", "coding", "reading"] as const;
 
 export const Hobbies = () => {
   const { t } = useLanguage();
-  const areaRef = useRef<HTMLDivElement>(null);
-  const inView = useInView(areaRef);
-  const floating = inView && !isLite();
 
   return (
-    <FloatContext.Provider value={floating}>
     <SectionWrapper idName="hobbies">
-      <div className="relative w-full overflow-hidden min-h-[800px] py-10">
-        <motion.div variants={textVariant()} className="relative z-10 text-center sm:text-left">
-          <p className={styles.sectionSubText}>{t('hobbies.subtitle')}</p>
-          <h2 className={styles.sectionHeadText}>{t('hobbies.title')}</h2>
-        </motion.div>
+      <motion.div variants={textVariant()} className="flex flex-col gap-6 md:flex-row md:items-end md:justify-between">
+        <SectionHeading index="05" label={t("hobbies.label")} title={t("hobbies.title")} />
+        <p className="max-w-sm text-[15px] leading-relaxed text-muted">{t("hobbies.description")}</p>
+      </motion.div>
 
-        <motion.p
-          variants={fadeIn(undefined, undefined, 0.1, 1)}
-          className="mt-4 text-secondary text-[17px] max-w-3xl leading-[30px] relative z-10 mx-auto sm:mx-0 text-center sm:text-left"
-        >
-          {t('hobbies.description')}
-        </motion.p>
-
-        <div ref={areaRef} className="relative w-full h-[900px] md:h-[600px] mt-10">
-          {/* Football */}
-          <FloatingElement delay={0} className="top-[0%] md:top-[10%] left-[2%] md:left-[10%] group">
-            <div className="bg-black/40 backdrop-blur-md border border-white/10 p-6 rounded-2xl w-[280px] md:w-[300px] shadow-2xl hover:bg-black/60 transition-colors duration-300">
-              <div className="flex items-center gap-4 mb-4">
-                <FootballIcon />
-                <h3 className="text-white font-bold text-[20px]">{t('hobbies.football.title')}</h3>
-              </div>
-              <p className="text-secondary text-[14px] leading-relaxed">
-                {t('hobbies.football.desc')}
-              </p>
+      <div className="mt-14 grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-4">
+        {HOBBIES.map((key, i) => (
+          <motion.div
+            key={key}
+            variants={fadeIn("up", undefined, 0.06 * i, 0.7)}
+            className="group relative overflow-hidden rounded-3xl border border-white/[0.08] bg-surface p-7 transition-colors hover:border-accent/30"
+          >
+            <div className="pointer-events-none absolute -bottom-24 -right-24 h-56 w-56 rounded-full bg-[radial-gradient(circle,rgba(255,138,76,0.18),transparent_70%)] opacity-0 transition-opacity duration-500 group-hover:opacity-100" />
+            <div className="flex h-12 w-12 items-center justify-center rounded-2xl border border-white/10 text-accent-soft transition-colors group-hover:border-accent/40">
+              <svg viewBox="0 0 24 24" className="h-6 w-6" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round">
+                {ICONS[key]}
+              </svg>
             </div>
-          </FloatingElement>
-
-          {/* Singing */}
-          <FloatingElement delay={1.5} className="top-[25%] md:top-[30%] right-[2%] md:right-[15%] group">
-            <div className="bg-black/40 backdrop-blur-md border border-white/10 p-6 rounded-2xl w-[280px] md:w-[300px] shadow-2xl hover:bg-black/60 transition-colors duration-300">
-              <div className="flex items-center gap-4 mb-4">
-                <SingingIcon />
-                <h3 className="text-white font-bold text-[20px]">{t('hobbies.singing.title')}</h3>
-              </div>
-              <p className="text-secondary text-[14px] leading-relaxed">
-                {t('hobbies.singing.desc')}
-              </p>
-            </div>
-          </FloatingElement>
-
-          {/* Coding */}
-          <FloatingElement delay={3} className="top-[50%] md:top-auto md:bottom-[15%] left-[2%] md:left-[25%] group">
-            <div className="bg-black/40 backdrop-blur-md border border-white/10 p-6 rounded-2xl w-[280px] md:w-[300px] shadow-2xl hover:bg-black/60 transition-colors duration-300">
-              <div className="flex items-center gap-4 mb-4">
-                <CodingIcon />
-                <h3 className="text-white font-bold text-[20px]">{t('hobbies.coding.title')}</h3>
-              </div>
-              <p className="text-secondary text-[14px] leading-relaxed">
-                {t('hobbies.coding.desc')}
-              </p>
-            </div>
-          </FloatingElement>
-
-          {/* Reading */}
-          <FloatingElement delay={0.8} className="top-[75%] md:top-auto md:bottom-[5%] right-[2%] md:right-[5%] group">
-            <div className="bg-black/40 backdrop-blur-md border border-white/10 p-6 rounded-2xl w-[280px] md:w-[300px] shadow-2xl hover:bg-black/60 transition-colors duration-300">
-              <div className="flex items-center gap-4 mb-4">
-                <ReadingIcon />
-                <h3 className="text-white font-bold text-[20px]">{t('hobbies.reading.title')}</h3>
-              </div>
-              <p className="text-secondary text-[14px] leading-relaxed">
-                {t('hobbies.reading.desc')}
-              </p>
-            </div>
-          </FloatingElement>
-
-          {/* Background glows (radial gradients instead of blur filters: much cheaper to draw) */}
-          <div className="absolute inset-0 pointer-events-none">
-             <div className="absolute top-1/4 left-1/4 w-[32rem] h-[32rem] -translate-x-1/4 -translate-y-1/4 rounded-full bg-[radial-gradient(circle,rgba(145,94,255,0.12),transparent_65%)]"></div>
-             <div className="absolute top-1/3 right-1/4 w-[32rem] h-[32rem] translate-x-1/4 -translate-y-1/4 rounded-full bg-[radial-gradient(circle,rgba(255,94,145,0.12),transparent_65%)]"></div>
-             <div className="absolute bottom-1/4 left-1/3 w-[32rem] h-[32rem] -translate-x-1/4 translate-y-1/4 rounded-full bg-[radial-gradient(circle,rgba(94,255,145,0.10),transparent_65%)]"></div>
-          </div>
-        </div>
+            <h3 className="mt-10 font-serif text-3xl italic text-cream">{t(`hobbies.${key}.title`)}</h3>
+            <p className="mt-3 text-sm leading-relaxed text-muted">{t(`hobbies.${key}.desc`)}</p>
+          </motion.div>
+        ))}
       </div>
     </SectionWrapper>
-    </FloatContext.Provider>
   );
 };
 
